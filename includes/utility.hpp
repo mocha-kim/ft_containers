@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 17:34:39 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/06/29 18:02:13 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/06/29 18:10:45 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ namespace ft
 	template <class T1, class T2>
 	struct pair
 	{
-	public :
+	public:
 		typedef T1 first_type;
 		typedef T2 second_type;
 
