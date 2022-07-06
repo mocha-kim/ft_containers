@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Utility.hpp                                        :+:      :+:    :+:   */
+/*   utility.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 17:34:39 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/06/29 18:10:45 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/07/06 17:17:33 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILITY_HPP
-#define UTILITY_HPP
+#ifndef _FT_UTILITY_HPP
+#define _FT_UTILITY_HPP
 
 namespace ft
 {
@@ -47,6 +47,12 @@ namespace ft
 			return (*this);
 		}
 	};
+
+	template <class T1, class T2>
+    ft::pair<T1,T2> make_pair(T1 x, T2 y)
+    {
+        return (ft::pair<T1, T2>(x, y));
+    }
 }
 
 #endif

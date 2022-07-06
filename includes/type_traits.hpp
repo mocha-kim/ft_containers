@@ -1,26 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Deque.hpp                                          :+:      :+:    :+:   */
+/*   type_traits.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/23 22:04:57 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/06/29 18:02:36 by sunhkim          ###   ########.fr       */
+/*   Created: 2022/07/06 16:31:13 by sunhkim           #+#    #+#             */
+/*   Updated: 2022/07/06 17:17:50 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DEQUE_HPP
-#define DEQUE_HPP
-
-#include <memory>
+#ifndef _FT_TYPE_TRAITS_HPP
+#define _FT_TYPE_TRAITS_HPP
 
 namespace ft
 {
-	template <class T, class Alloc = std::allocator<T> >
-	class deque
+	template <class T> struct is_integral;
+
+	template <bool, typename T = void>
+	struct enable_if
+	{ };
+
+	template <typename T>
+	struct enable_if<true, T>
 	{
-		
+		typedef T type;
 	};
 }
 
