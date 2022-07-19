@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 16:26:08 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/07/06 17:17:45 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/07/19 16:24:15 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,14 @@ namespace ft
 		}
 		return (first2!=last2);
 	}
+
+	template <typename T>
+	void	swap(T &a, T &b)
+	{
+  		T c(a);
+		a = b;
+		b = c;
+	};
 }
 
 #endif

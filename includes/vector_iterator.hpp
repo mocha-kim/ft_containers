@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 16:51:07 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/07/13 14:59:11 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/07/19 16:55:35 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,17 @@ namespace ft
 		vector_iterator &operator=(vector_iterator const &other)
 		{
 			this->_pointer = other._pointer;
-			return (*this);
+			return *this;
 		}
 		vector_iterator &operator+=(int value)
 		{
 			this->_pointer += value;
-			return (*this);
+			return *this;
 		}
 		vector_iterator &operator-=(int value)
 		{
 			this->_pointer -= value;
-			return (*this);
+			return *this;
 		}
 
 		/*
@@ -73,38 +73,38 @@ namespace ft
 		{
 			vector_iterator tmp(*this);
 			++this->_pointer;
-			return (tmp);
+			return tmp;
 		}
 		vector_iterator &operator++()
 		{
 			++this->_pointer;
-			return (*this);
+			return *this;
 		}
 		vector_iterator operator--(int)
 		{
 			vector_iterator tmp(*this);
 			--this->_pointer;
-			return (tmp);
+			return tmp;
 		}
 		vector_iterator &operator--()
 		{
 			--this->_pointer;
-			return (*this);
+			return *this;
 		}
 
 		vector_iterator operator+(int value) const
 		{
 			vector_iterator tmp(*this);
-			return (tmp += value);
+			return tmp += value;
 		}
 		vector_iterator operator-(int value) const
 		{
 			vector_iterator tmp(*this);
-			return (tmp -= value);
+			return tmp -= value;
 		}
 		difference_type operator-(vector_iterator const &other) const
 		{
-			return (this->_pointer - other._pointer);
+			return this->_pointer - other._pointer;
 		}
 
 		/*

@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 17:14:12 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/07/13 14:54:29 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/07/19 16:57:44 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ namespace ft
 	struct iterator_trait {};
 
 	template<typename iterator>
-	class reverse_iterator : public iterator
+	class ft_reverse_iterator : public iterator
 	{
 	public:
 		using typename iterator::value_type;
@@ -29,65 +29,53 @@ namespace ft
 		using typename iterator::difference_type;
 
 	public:
-		reverse_iterator() : iterator() {}
-		reverse_iterator(iterator const &it) : iterator(it) {}
-		reverse_iterator(reverse_iterator const &other): iterator(other.p) {}
+		ft_reverse_iterator() : iterator() {}
+		ft_reverse_iterator(iterator const &it) : iterator(it) {}
+		ft_reverse_iterator(ft_reverse_iterator const &other): iterator(other.p) {}
 		
 		/*
 		** Assignment operators
 		*/
-		reverse_iterator &operator=(reverse_iterator const &other)
+		ft_reverse_iterator &operator=(ft_reverse_iterator const &other)
 		{
 			this->p = other.p;
-			return (*this);
+			return *this;
 		}
 		
 		/*
 		** Member and pointer operators
 		*/
-		reference operator*()
+		value_type &operator*()
 		{
-			iterator tmp(*this);
-			return (*--tmp);
-		}
-		const_reference operator*() const
+			return *this->_pointer;
+		};
+		value_type *operator->()
 		{
-			iterator tmp(*this);
-			return (*--tmp);
-		}
-		pointer operator->()
-		{
-			iterator tmp(*this);
-			return (&*--tmp);
-		}
-		const_pointer operator->() const
-		{
-			iterator tmp(*this);
-			return (&*--tmp);
-		}
+			return this->_pointer;
+		};
 
 		/*
 		** Arithmetic operators
 		*/
-		reverse_iterator operator++(int)
+		ft_reverse_iterator operator++(int)
 		{
-			reverse_iterator tmp(*this);
-			operator++();
-			return (tmp);
+			ft_reverse_iterator tmp(*this);
+			tmp._pointer--;
+			return tmp;
 		}
 		iterator &operator++()
 		{
-			return (this->iterator::operator--());
+			return this->iterator::operator--();
 		}
-		reverse_iterator operator--(int)
+		ft_reverse_iterator operator--(int)
 		{
-			reverse_iterator tmp(*this);
-			operator--();
-			return (tmp);
+			ft_reverse_iterator tmp(*this);
+			tmp._pointer++;
+			return tmp;
 		}
 		iterator &operator--()
 		{
-			return (this->iterator::operator++());
+			return this->iterator::operator++();
 		}
 	};
 }
