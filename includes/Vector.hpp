@@ -6,14 +6,16 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 21:56:13 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/07/19 16:43:26 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/07/27 21:16:52 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 
+#include <limits>
 #include <memory>
+#include "type_traits.hpp"
 #include "iterator.hpp"
 #include "vector_iterator.hpp"
 #include "algorithm.hpp"
@@ -33,43 +35,43 @@ namespace ft
 		typedef value_type			*pointer;
 		typedef value_type const	*const_pointer;
 		
-		typedef vector_iterator<T> iterator;
-		typedef vector_iterator<const T> const_iterator;
-		typedef ft_reverse_iterator<iterator> reverse_iterator;
+		typedef vector_iterator<T>					iterator;
+		typedef vector_const_iterator<T>		const_iterator;
+		typedef ft_reverse_iterator<iterator>		reverse_iterator;
 		typedef ft_reverse_iterator<const_iterator> const_reverse_iterator;
 
 	protected:
 		typedef vector<T> _this;
 
-		pointer _container;
-		allocator_type _allocator;
-		size_type	_length;
-		size_type	_capacity;
+		pointer			_container;
+		allocator_type	_allocator;
+		size_type		_length;
+		size_type		_capacity;
 
 	public:
 		/*
 		** Constructors, Distructor
 		*/
 		explicit vector(const allocator_type &allocator = allocator_type())
-		: _length(0), _capacity(0), _container(0), _allocator(allocator)
+		: _container(0), _allocator(allocator), _length(0), _capacity(0)
 		{
 			_container = _allocator.allocate(0);
 		};
-		template <class InputIterator>
-		vector(InputIterator begin, InputIterator end, const allocator_type &allocator = allocator_type())
-		: _length(0), _capacity(0), _container(0), _allocator(allocator)
+		template <class input_iter>
+		vector(input_iter begin, input_iter end, const allocator_type &allocator = allocator_type())
+		: _container(0), _allocator(allocator), _length(0), _capacity(0)
 		{
 			_container = _allocator.allocate(0);
 			assign(begin, end);
 		};
 		vector(size_type n, const_reference value = value_type(), const allocator_type &allocator = allocator_type())
-		: _length(0), _capacity(0), _container(0), _allocator(allocator)
+		: _container(0), _allocator(allocator), _length(0), _capacity(0)
 		{
 			_container = _allocator.allocate(0);
 			assign(n, value);
 		};
 		vector(const vector &other)
-		: _length(0), _capacity(0), _container(0), _allocator(other._allocator)
+		: _container(0), _allocator(other._allocator), _length(0), _capacity(0)
 		{
 			*this = other;
 		};
@@ -95,7 +97,7 @@ namespace ft
 
 		/*
 		** Iterators
-		*/
+		*/	
 		iterator begin() { return iterator(_container); };
 		const_iterator begin() const { return const_iterator(_container); };
 		iterator end() { return iterator(_container + _length); };
@@ -148,13 +150,13 @@ namespace ft
 		reference at(size_type n)
 		{
 			if (n >= _length || n < 0)
-				throw std::length_error("index out-of-bounds");
+				throw std::out_of_range("index out_of_range");
 			return _container[n];
 		};
 		const_reference at(size_type n) const
 		{
 			if (n >= _length || n < 0)
-				throw std::length_error("index out-of-bounds");
+				throw std::out_of_range("index out_of_range");
 			return _container[n];
 		};
 		reference front() { return _container[0]; };
@@ -165,16 +167,19 @@ namespace ft
 		/*
 		** Modifiers
 		*/
-		template <class InputIterator>
-		void assign(InputIterator first, InputIterator last)
-		{
-			clear();
-			insert(begin(), first, last);
-		};
 		void assign(size_type n, const value_type &value)
 		{
 			clear();
-			insert(begin(), n, value);
+			insert(this->begin(), n, value);
+		};
+		template <class input_iter>
+		void assign(
+		// typename ft::enable_if<!std::numeric_limits<input_iter>::is_integer, input_iter>::type begin
+		input_iter begin
+		, input_iter end)
+		{
+			clear();
+			insert(this->begin(), begin, end);
 		};
 		void push_back(const value_type &value)
 		{
@@ -187,36 +192,45 @@ namespace ft
 			if (_length)
 				_length--;
 		};
-		iterator insert(iterator position, const value_type &value)
+		iterator insert(iterator position, const_reference value)
 		{
-			size_type i = 0;
-			iterator it = begin();
-			while (it + i != position && i < _length)
-				i++;
-			if (_capacity < _length + 1)
-				reserve(_length + 1);
-			size_type j = _capacity - 1;
-			while (j > i)
-			{
-				_container[j] = _container[j - 1];
-				j--;
-			}
-			_container[i] = value;
-			_length++;
-			return (iterator(&_container[i]));
+			insert(position, 1, value);
+			return position;
 		};
 		void insert(iterator position, size_type n, const value_type &value)
 		{
-			while (n--)
-				position = insert(position, value);
+			if (n == 0)
+				return;
+				
+			if (_length + n > _capacity)
+				reserve(_length + n);
+
+			size_type index = 0;
+			for (iterator it = begin(); it != position; it++)
+				index++;
+				
+			std::allocator<T> alloc;
+			for (ptrdiff_t i = _length - 1; i >= (ptrdiff_t)index; i--)
+			{
+				alloc.construct(&_container[i + n], _container[i]);
+				alloc.destroy(&_container[i]);
+			}
+			for (size_type i = index; i < index + n; i++)
+				alloc.construct(&_container[i], value);
+
+			_length += n;
 		};
-		template <class InputIterator>
-		void insert(iterator position, InputIterator begin, InputIterator end)
+		template <class input_iter>
+
+		void insert(iterator position
+		, input_iter begin
+		// , typename ft::enable_if<!std::numeric_limits<input_iter>::is_integer, input_iter>::type begin
+		, input_iter end)
 		{
 			while (begin != end)
 			{
 				position = insert(position, *begin) + 1;
-				++begin;
+				begin++;
 			}
 		};
 		iterator erase(iterator position)
