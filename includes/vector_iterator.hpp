@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 16:51:07 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/07/19 16:55:35 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/07/27 20:41:36 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ namespace ft
 		typedef std::ptrdiff_t		difference_type;
 
 	protected:
-		pointer _pointer;
+		pointer			_pointer;
 
 	public:
 		vector_iterator() : _pointer(nullptr) {};
@@ -59,12 +59,9 @@ namespace ft
 		/*
 		** Member and pointer operators
 		*/
-		reference operator*() { return (*this->_pointer); }
-		const_reference operator*() const { return (*this->_pointer); }
-		pointer operator->() { return (this->_pointer); }
-		const_pointer operator->() const { return (this->_pointer); }
-		reference operator[](int val) { return (*(this->_pointer + val)); }
-		const_reference operator[](int val) const { return (*(this->_pointer + val)); }
+		reference operator*() { return *this->_pointer; }
+		pointer operator->() { return this->_pointer; }
+		reference operator[](int val) { return *(this->_pointer + val); }
 
 		/*
 		** Arithmetic operators
@@ -116,7 +113,44 @@ namespace ft
 		bool operator<=(vector_iterator const &other) const { return (this->_pointer <= other._pointer); }
 		bool operator>(vector_iterator const &other) const { return (this->_pointer > other._pointer); }
 		bool operator>=(vector_iterator const &other) const { return (this->_pointer >= other._pointer); }
-	}; //class vector_iterator
+	}; // class vector_iterator
+
+
+	template<typename T>
+	class vector_const_iterator : public vector_iterator<T>
+	{
+	public:
+		typedef T					value_type;
+		typedef value_type			*pointer;
+		typedef value_type const	*const_pointer;
+		typedef value_type			&reference;
+		typedef value_type const	&const_reference;
+		typedef std::ptrdiff_t		difference_type;
+
+	public:
+		vector_const_iterator() : vector_iterator<value_type>() {};
+		vector_const_iterator(pointer p) : vector_iterator<value_type>(p) {};
+		vector_const_iterator(vector_iterator<value_type> const &other)
+		: vector_iterator<value_type>(other) {}
+		vector_const_iterator(vector_const_iterator const &other)
+		: vector_iterator<value_type>(other._pointer) {}
+		virtual ~vector_const_iterator() {}
+		
+		/*
+		** Assignment operators
+		*/
+		vector_const_iterator &operator=(const vector_const_iterator &other)
+		{
+			this->_ptr = other._ptr;
+			return (*this);
+		};
+
+		/*
+		** Member and pointer operators
+		*/
+		const_reference operator*() { return *this->_pointer; }
+		const_reference operator[](int val) const { return *(this->_pointer + val); }
+	}; // class vector_const_iterator
 
 	template <typename T>
 	bool operator==(const vector_iterator<T> &lhs, const vector_iterator<T> &rhs)

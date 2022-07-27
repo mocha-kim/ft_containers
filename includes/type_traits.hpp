@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 16:31:13 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/07/06 17:17:50 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/07/27 21:10:19 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ namespace ft
 	template <class T> struct is_integral;
 
 	template <bool, typename T = void>
-	struct enable_if
-	{ };
+	struct enable_if;
 
 	template <typename T>
 	struct enable_if<true, T>
