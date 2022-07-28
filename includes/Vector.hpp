@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 21:56:13 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/07/27 21:16:52 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/07/28 15:58:42 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ namespace ft
 		{
 			_container = _allocator.allocate(0);
 		};
-		template <class input_iter>
-		vector(input_iter begin, input_iter end, const allocator_type &allocator = allocator_type())
+		template <class InputIterator>
+		vector(InputIterator begin, InputIterator end, const allocator_type &allocator = allocator_type())
 		: _container(0), _allocator(allocator), _length(0), _capacity(0)
 		{
 			_container = _allocator.allocate(0);
@@ -169,18 +169,35 @@ namespace ft
 		*/
 		void assign(size_type n, const value_type &value)
 		{
-			clear();
-			insert(this->begin(), n, value);
+			if (n > _capacity)
+			{
+				_allocator.deallocate(_container, _capacity);
+				_capacity = n;
+				_container = _allocator.allocate(_capacity);
+			}
+			for (size_t i = 0; i < n; i++)
+				_container[i] = value;
+			_length = n;
 		};
-		template <class input_iter>
-		void assign(
-		// typename ft::enable_if<!std::numeric_limits<input_iter>::is_integer, input_iter>::type begin
-		input_iter begin
-		, input_iter end)
+		template <class InputIterator>
+        void assign(InputIterator first, InputIterator last
+			, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0)
 		{
-			clear();
-			insert(this->begin(), begin, end);
-		};
+			size_t n = ft::distance(first, last);
+			if (n > _capacity)
+			{
+				_allocator.deallocate(_container, _capacity);
+				_capacity = n;
+				_container = _allocator.allocate(_capacity);
+			}
+			size_t i = 0;
+			for (; first != last; first++)
+			{
+				_container[i] = *first;
+				i++;
+			}
+			_length = n;
+        }
 		void push_back(const value_type &value)
 		{
 			if (_length + 1 > _capacity)
@@ -192,66 +209,84 @@ namespace ft
 			if (_length)
 				_length--;
 		};
-		iterator insert(iterator position, const_reference value)
+		iterator insert(iterator position, const value_type &value)
 		{
-			insert(position, 1, value);
-			return position;
+			difference_type idx = position - this->begin();
+			this->insert(position, 1, value);
+			return iterator(this->begin() + idx);
 		};
 		void insert(iterator position, size_type n, const value_type &value)
 		{
-			if (n == 0)
-				return;
-				
-			if (_length + n > _capacity)
-				reserve(_length + n);
+			difference_type idx = position - this->begin();
+			difference_type old_idx = this->end() - this->begin();
 
-			size_type index = 0;
-			for (iterator it = begin(); it != position; it++)
-				index++;
-				
-			std::allocator<T> alloc;
-			for (ptrdiff_t i = _length - 1; i >= (ptrdiff_t)index; i--)
+			this->resize(_length + n);
+			
+			iterator end = this->end();
+			iterator old = this->begin() + old_idx;
+			position = this->begin() + idx;
+			for (; old != position - 1; old--)
 			{
-				alloc.construct(&_container[i + n], _container[i]);
-				alloc.destroy(&_container[i]);
+				*end = *old;
+				end--;
 			}
-			for (size_type i = index; i < index + n; i++)
-				alloc.construct(&_container[i], value);
-
-			_length += n;
+			for (; n > 0; n--)
+			{
+				*position = value;
+				position++;
+			}
 		};
-		template <class input_iter>
-
-		void insert(iterator position
-		, input_iter begin
-		// , typename ft::enable_if<!std::numeric_limits<input_iter>::is_integer, input_iter>::type begin
-		, input_iter end)
+		template <class InputIterator>
+		void insert(iterator position, InputIterator first, InputIterator last
+			, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0)
 		{
-			while (begin != end)
+			difference_type idx = position - this->begin();
+			difference_type old_idx = this->end() - this->begin();
+
+			this->resize(_length + ft::distance(first, last));
+			
+			iterator end = this->end();
+			iterator old = this->begin() + old_idx;
+			position = this->begin() + idx;
+			for (; old != position - 1; old--)
 			{
-				position = insert(position, *begin) + 1;
-				begin++;
+				*end = *old;
+				end--;
 			}
-		};
+			for (; first != last; first++)
+			{
+				*position = *first;
+				position++;
+			}
+		}
 		iterator erase(iterator position)
 		{
-			iterator cursor = position;
-			while (cursor + 1 != end())
+			iterator i = position;
+			while (i + 1 != end())
 			{
-				*cursor = *(cursor + 1);
-				cursor++;
+				*i = *(i + 1);
+				i++;
 			}
 			_length--;
 			return (iterator(position));
 		};
-		iterator erase(iterator begin, iterator end)
+		iterator erase(iterator first, iterator last)
 		{
-			while (begin != end)
+			iterator ret = first;
+			iterator end = this->end();
+			size_type del_length = ft::distance(first, last);
+			for (; last != end; last++)
 			{
-				erase(begin);
-				end--;
+				*first = *last;
+				first++;
 			}
-			return (iterator(begin));
+			while (del_length > 0)
+			{
+				_length--;
+				_allocator.destroy(&_container[_length]);
+				del_length--;
+			}
+			return (ret);
 		};
 		void clear()
 		{

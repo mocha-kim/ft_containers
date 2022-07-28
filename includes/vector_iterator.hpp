@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 16:51:07 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/07/27 20:41:36 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/07/28 16:15:49 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ namespace ft
 			--this->_pointer;
 			return *this;
 		}
-
 		vector_iterator operator+(int value) const
 		{
 			vector_iterator tmp(*this);
@@ -141,7 +140,7 @@ namespace ft
 		*/
 		vector_const_iterator &operator=(const vector_const_iterator &other)
 		{
-			this->_ptr = other._ptr;
+			this->_pointer = other._pointer;
 			return (*this);
 		};
 
