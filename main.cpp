@@ -117,6 +117,8 @@ int main(int argc, char** argv) {
 	std::cout << (it_foo == bar.begin()) << std::endl;
 	std::cout << (it_bar == foo.begin()) << std::endl;
 
+	foo.assign(10, 0);
+
 	// for (int i = 0; i < COUNT; ++i)
 	// {
 	// 	map_int.insert(ft::make_pair(rand(), rand()));
