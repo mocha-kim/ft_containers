@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 16:51:07 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/07/28 16:15:49 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/08/05 23:36:04 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,45 +14,48 @@
 #define _FT_VECTOR_ITERATOR_HPP
 
 #include <cstddef>
+#include "iterator.hpp"
 
 namespace ft
 {
 	template<typename T>
-	class vector_iterator : iterator_trait
+	class vector_iterator : public random_access_iterator<T>
 	{
 	public:
 		typedef T					value_type;
-		typedef value_type			*pointer;
-		typedef value_type const	*const_pointer;
-		typedef value_type			&reference;
-		typedef value_type const	&const_reference;
 		typedef std::ptrdiff_t		difference_type;
+		typedef value_type			*pointer;
+		typedef value_type			&reference;
 
 	protected:
-		pointer			_pointer;
+		typedef random_access_iterator<T>	rand_iter;
+
+		/*
+		** Constructors, Distructor
+		*/
+		vector_iterator(const rand_iter &other) : rand_iter(other) {}
 
 	public:
-		vector_iterator() : _pointer(nullptr) {};
-		vector_iterator(pointer p) : _pointer(p) {};
-		vector_iterator(vector_iterator const &other) : _pointer(other._pointer) {}
+		vector_iterator() : rand_iter() {}
+		vector_iterator(pointer p) : rand_iter(p) {}
 		virtual ~vector_iterator() {}
 
 		/*
 		** Assignment operators
 		*/
-		vector_iterator &operator=(vector_iterator const &other)
+		vector_iterator &operator=(const vector_iterator &rhs)
 		{
-			this->_pointer = other._pointer;
+			this->_pointer = rhs._pointer;
 			return *this;
 		}
-		vector_iterator &operator+=(int value)
+		vector_iterator &operator+=(int i)
 		{
-			this->_pointer += value;
+			this->_pointer += i;
 			return *this;
 		}
-		vector_iterator &operator-=(int value)
+		vector_iterator &operator-=(int i)
 		{
-			this->_pointer -= value;
+			this->_pointer -= i;
 			return *this;
 		}
 
@@ -61,157 +64,129 @@ namespace ft
 		*/
 		reference operator*() { return *this->_pointer; }
 		pointer operator->() { return this->_pointer; }
-		reference operator[](int val) { return *(this->_pointer + val); }
+		reference operator[](difference_type i) { return this->_pointer[i]; }
 
 		/*
 		** Arithmetic operators
 		*/
 		vector_iterator operator++(int)
 		{
-			vector_iterator tmp(*this);
-			++this->_pointer;
-			return tmp;
+			return rand_iter::operator++(0);
 		}
 		vector_iterator &operator++()
 		{
-			++this->_pointer;
+			rand_iter::operator++();
 			return *this;
 		}
 		vector_iterator operator--(int)
 		{
-			vector_iterator tmp(*this);
-			--this->_pointer;
-			return tmp;
+			return rand_iter::operator--(0);
 		}
 		vector_iterator &operator--()
 		{
-			--this->_pointer;
+			rand_iter::operator--();
 			return *this;
 		}
-		vector_iterator operator+(int value) const
+		vector_iterator operator+(difference_type i) const
 		{
-			vector_iterator tmp(*this);
-			return tmp += value;
+			return rand_iter::operator+(i);
 		}
-		vector_iterator operator-(int value) const
+		friend vector_iterator operator+(difference_type i, const vector_iterator &rhs)
 		{
-			vector_iterator tmp(*this);
-			return tmp -= value;
-		}
-		difference_type operator-(vector_iterator const &other) const
+			return rhs.operator+(i);
+		};
+		vector_iterator operator-(difference_type i) const
 		{
-			return this->_pointer - other._pointer;
+			return rand_iter::operator-(i);
 		}
-
-		/*
-		** Comparison operators
-		*/
-		bool operator==(vector_iterator const &other) const { return (this->_pointer == other._pointer); }
-		bool operator!=(vector_iterator const &other) const { return (this->_pointer != other._pointer); }
-		bool operator<(vector_iterator const &other) const { return (this->_pointer < other._pointer); }
-		bool operator<=(vector_iterator const &other) const { return (this->_pointer <= other._pointer); }
-		bool operator>(vector_iterator const &other) const { return (this->_pointer > other._pointer); }
-		bool operator>=(vector_iterator const &other) const { return (this->_pointer >= other._pointer); }
+		difference_type operator-(const rand_iter &rhs) const
+		{
+			return rand_iter::operator-(rhs);
+		}
 	}; // class vector_iterator
 
-
 	template<typename T>
-	class vector_const_iterator : public vector_iterator<T>
+	class vector_const_iterator : public random_access_iterator<T>
 	{
 	public:
 		typedef T					value_type;
 		typedef value_type			*pointer;
-		typedef value_type const	*const_pointer;
+		typedef const value_type	*const_pointer;
 		typedef value_type			&reference;
-		typedef value_type const	&const_reference;
+		typedef const value_type	&const_reference;
 		typedef std::ptrdiff_t		difference_type;
 
+	protected:
+		typedef random_access_iterator<T>	rand_iter;
+
 	public:
-		vector_const_iterator() : vector_iterator<value_type>() {};
-		vector_const_iterator(pointer p) : vector_iterator<value_type>(p) {};
-		vector_const_iterator(vector_iterator<value_type> const &other)
-		: vector_iterator<value_type>(other) {}
-		vector_const_iterator(vector_const_iterator const &other)
-		: vector_iterator<value_type>(other._pointer) {}
+		/*
+		** Constructors, Distructor
+		*/
+		vector_const_iterator() : rand_iter() {}
+		vector_const_iterator(pointer p) : rand_iter(p) {}
+		vector_const_iterator(const rand_iter &other) : rand_iter(other) {}
 		virtual ~vector_const_iterator() {}
-		
+
 		/*
 		** Assignment operators
 		*/
-		vector_const_iterator &operator=(const vector_const_iterator &other)
+		vector_const_iterator &operator+=(difference_type i)
 		{
-			this->_pointer = other._pointer;
-			return (*this);
-		};
+			this->_pointer += i;
+			return *this;
+		}
+		vector_const_iterator &operator-=(difference_type i)
+		{
+			this->_pointer -= i;
+			return *this;
+		}
 
 		/*
 		** Member and pointer operators
 		*/
-		const_reference operator*() { return *this->_pointer; }
-		const_reference operator[](int val) const { return *(this->_pointer + val); }
+		const_reference operator*() const { return *this->_pointer; }
+		const_pointer operator->() const { return this->_pointer; }
+		const_reference operator[](difference_type i) const { return this->p[i]; }
+
+		/*
+		** Arithmetic operators
+		*/
+		vector_const_iterator operator++(int)
+		{	
+			return rand_iter::operator++(0);
+		}
+		vector_const_iterator &operator++(void)
+		{
+			rand_iter::operator++();
+			return *this;
+		}
+		vector_const_iterator operator--(int)
+		{
+			return rand_iter::operator--(0);
+		}
+		vector_const_iterator &operator--()
+		{
+			--this->_pointer;
+			return *this;
+		}
+		vector_const_iterator operator+(difference_type i) const
+		{
+			return rand_iter::operator+(i);
+		}
+		friend vector_const_iterator operator+(difference_type i, const vector_const_iterator &rhs)
+		{
+			return rhs.operator+(i);
+		};
+		vector_const_iterator operator-(difference_type i) const
+		{
+			return rand_iter::operator-(i);
+		}
+		difference_type operator-(const rand_iter &rhs) const
+		{
+			return rand_iter::operator-(rhs);
+		}
 	}; // class vector_const_iterator
-
-	template <typename T>
-	bool operator==(const vector_iterator<T> &lhs, const vector_iterator<T> &rhs)
-	{
-		return lhs._e == rhs._e;
-	}
-
-	template <typename T>
-	bool operator!=(const vector_iterator<T> &lhs, const vector_iterator<T> &rhs)
-	{
-		return !(lhs == rhs);
-	}
-
-	template <typename T>
-	bool operator<(const vector_iterator<T> &lhs, const vector_iterator<T> &rhs)
-	{
-		return lhs._e < rhs._e;
-	}
-
-	template <typename T>
-	bool operator<=(const vector_iterator<T> &lhs, const vector_iterator<T> &rhs)
-	{
-		return !(lhs > rhs);
-	}
-	
-	template <typename T>
-	bool operator>(const vector_iterator<T> &lhs, const vector_iterator<T> &rhs)
-	{
-		return rhs < lhs;
-	}
-
-	template <typename T>
-	bool operator>=(const vector_iterator<T> &lhs, const vector_iterator<T> &rhs)
-	{
-		return !(lhs < rhs);
-	}
-
-	template <typename T>
-	vector_iterator<T> operator+(const vector_iterator<T> &ite, std::size_t offset)
-	{
-		vector_iterator<T> res = ite;
-		return res += offset;
-	}
-
-	template <typename T>
-	vector_iterator<T> operator+(std::size_t offset, const vector_iterator<T> &ite)
-	{
-		return ite + offset;
-	}
-
-	template <typename T>
-	vector_iterator<T> operator-(const vector_iterator<T> &ite, std::size_t offset)
-	{
-		vector_iterator<T> res = ite;
-		return res -= offset;
-	}
-
-	template <typename T>
-	ptrdiff_t operator-(const vector_iterator<T> &lhs, const vector_iterator<T> &rhs)
-	{
-		return lhs._e - rhs._e;
-	}
 }
 
 #endif
