@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 16:26:08 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/07/19 16:24:15 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/08/05 23:37:43 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@
 namespace ft
 {
 	template <class InputIterator1, class InputIterator2>
-	bool equal ( InputIterator1 first1, InputIterator1 last1, InputIterator2 first2 )
+	bool equal (InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)
 	{
 		while (first1!=last1)
 		{
-			if (!(*first1 == *first2))   // or: if (!pred(*first1,*first2)), for version 2
+			if (!(*first1 == *first2))
 				return false;
 			++first1; ++first2;
 		}
@@ -43,7 +43,7 @@ namespace ft
 	}
 
 	template <typename T>
-	void	swap(T &a, T &b)
+	void swap(T &a, T &b)
 	{
   		T c(a);
 		a = b;
