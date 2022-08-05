@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 21:56:13 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/07/28 15:58:42 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/08/05 23:08:44 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include <limits>
 #include <memory>
 #include "type_traits.hpp"
-#include "iterator.hpp"
 #include "vector_iterator.hpp"
 #include "algorithm.hpp"
 
@@ -30,15 +29,15 @@ namespace ft
 		typedef Alloc				allocator_type;
 		typedef std::size_t			size_type;
 		typedef std::ptrdiff_t		difference_type;
-		typedef value_type			&reference;
-		typedef value_type const	&const_reference;
 		typedef value_type			*pointer;
 		typedef value_type const	*const_pointer;
+		typedef value_type			&reference;
+		typedef value_type const	&const_reference;
 		
-		typedef vector_iterator<T>					iterator;
-		typedef vector_const_iterator<T>		const_iterator;
-		typedef ft_reverse_iterator<iterator>		reverse_iterator;
-		typedef ft_reverse_iterator<const_iterator> const_reverse_iterator;
+		typedef ft::vector_iterator<T>					iterator;
+		typedef ft::vector_const_iterator<T>			const_iterator;
+		typedef ft::reverse_iterator<iterator>			reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 
 	protected:
 		typedef vector<T> _this;
