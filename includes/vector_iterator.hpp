@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 16:51:07 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/08/05 23:36:04 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/08/06 00:54:48 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,10 +110,8 @@ namespace ft
 	{
 	public:
 		typedef T					value_type;
-		typedef value_type			*pointer;
-		typedef const value_type	*const_pointer;
-		typedef value_type			&reference;
-		typedef const value_type	&const_reference;
+		typedef const value_type	*pointer;
+		typedef const value_type	&reference;
 		typedef std::ptrdiff_t		difference_type;
 
 	protected:
@@ -124,7 +122,7 @@ namespace ft
 		** Constructors, Distructor
 		*/
 		vector_const_iterator() : rand_iter() {}
-		vector_const_iterator(pointer p) : rand_iter(p) {}
+		vector_const_iterator(value_type *p) : rand_iter(p) {}
 		vector_const_iterator(const rand_iter &other) : rand_iter(other) {}
 		virtual ~vector_const_iterator() {}
 
@@ -145,9 +143,9 @@ namespace ft
 		/*
 		** Member and pointer operators
 		*/
-		const_reference operator*() const { return *this->_pointer; }
-		const_pointer operator->() const { return this->_pointer; }
-		const_reference operator[](difference_type i) const { return this->p[i]; }
+		reference operator*() const { return *this->_pointer; }
+		pointer operator->() const { return this->_pointer; }
+		reference operator[](difference_type i) const { return this->p[i]; }
 
 		/*
 		** Arithmetic operators
