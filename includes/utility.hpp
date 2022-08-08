@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 17:34:39 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/07/06 17:17:33 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/08/08 17:19:24 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ namespace ft
 		: first(fir), second(sec)
 		{}
 
-		pair& operator= (const pair& pr)
+		pair& operator=(const pair& pr)
 		{
 			if (*this == pr)
 				return (*this);
