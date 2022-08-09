@@ -6,12 +6,12 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 21:56:13 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/08/06 00:52:37 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/08/08 17:20:36 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VECTOR_HPP
-#define VECTOR_HPP
+#ifndef FT_VECTOR_HPP
+#define FT_VECTOR_HPP
 
 #include <limits>
 #include <memory>
