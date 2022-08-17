@@ -6,30 +6,34 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 21:56:08 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/08/10 18:27:44 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/08/17 16:52:36 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
+/* https://github.com/axel-bittel/42-ft_containers/blob/master/include/map.hpp */
+/* https://github.com/Conanyedo/Ft_Containers/blob/master/map.hpp */
 
 #ifndef FT_MAP_HPP
 #define FT_MAP_HPP
 
 #include <memory>
+#include "tree.hpp"
 #include "functional.hpp"
-#include "utility.hpp"
 
 namespace ft
 {
 	template <class Key, class T, class Compare = std::less<Key>,
-			  class Alloc = std::allocator<std::pair<const Key, T> > >
+			  class Alloc = std::allocator<ft::pair<const Key, T> > >
 	class map
 	{
+        typedef Compare				key_compare;
         typedef Key					key_type;
         typedef T					mapped_type;
         typedef Alloc				allocator_type;
         typedef pair<const Key, T>	value_type;
 		typedef std::size_t			size_type;
 		typedef std::ptrdiff_t		difference_type;
-        typedef Compare				key_compare;
 		typedef typename allocator_type::pointer			pointer;
 		typedef typename allocator_type::const_pointer		const_pointer;
 		typedef typename allocator_type::reference			reference;
@@ -50,16 +54,22 @@ namespace ft
         };
 
 	protected:
+		typedef avl_tree<key_type, mapped_type, key_compare, allocator_type>	tree_type;
 
-        typedef impl::tree<value_type, value_compare, allocator_type> tree_type;
-        tree_type tree_;
+		allocator_type	_allocator;
+        tree_type 		_tree;
+		key_compare		_compare;
 
 	public:
 		/*
 		** Constructors, Distructor
 		*/
 		explicit map map();
-		explicit map(const Compare& comp);
+		explicit map(const key_compare& comp = key_compare(), const allocator_type &alloc = allocator_type())
+		: _compare(comp), _allocator(alloc)
+		{
+			_tree = 
+		}
 		explicit map(const map& x);
 		map& operator=(const map& x);
 		~map();

@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 21:56:13 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/08/08 17:20:36 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/08/17 16:53:52 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 
 namespace ft
 {
+	/*  vector	*/
 	template <class T, class Alloc = std::allocator<T> >
 	class vector
 	{
