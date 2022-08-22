@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 17:19:41 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/08/17 21:25:57 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/08/22 17:21:47 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,6 @@
 
 namespace ft
 {
-	enum balance
-	{
-		NONE = 0,
-		RIGHT = 1,
-		LEFT = 2
-	};
-
 	/*   node	*/
 	template <class T>
 	struct tree_node
@@ -34,7 +27,7 @@ namespace ft
 		tree_node	*_left;
 		tree_node	*_right;
 		int			_height;
-		balance		_balance;
+		int			_balance;
 
 		tree_node(T d, node_pointer parent = NULL, node_pointer left = NULL, node_pointer right = NULL)
 		: _data(d), _height(1), _parent(parent), _left(left), _right(right), _balance(NONE) {}
@@ -72,8 +65,8 @@ namespace ft
 		}
 		
 		size_type size() const { return _size; }
-		size_type max_size() const { return _alloc.max_size(); }
-		allocator_type get_allocator() const { return this->_alloc; }
+		size_type max_size() const { return _allocator.max_size(); }
+		allocator_type get_allocator() const { return this->_allocator; }
 		node_pointer get_ptr() const { return this->_ptr; }
 		node_pointer get_min(node_pointer node = NULL) const
 		{
@@ -102,7 +95,7 @@ namespace ft
 					return (node);
 				node = successor(node);
 			}
-			return (_ptr);
+			return _ptr;
 		}
 		node_pointer upper_bound(const value_type& data)
 		{
@@ -113,7 +106,7 @@ namespace ft
 					return (node);
 				node = successor(node);
 			}
-			return (_ptr);
+			return _ptr;
 		}
 		void swap(avl_tree &other)
 		{
@@ -125,13 +118,13 @@ namespace ft
 
 			this->_root = other._root;
 			this->_ptr = other._ptr;
-			this->_allocator = other._alloc;
+			this->_allocator = other._allocator;
 			this->_compare = other._cmp;
 			this->_size = other._size;
 			
 			other._root = tmp_root;
 			other._ptr = tmp_ptr;
-			other._alloc = tmp_alloc;
+			other._allocator = tmp_alloc;
 			other._compare = tmp_compare;
 			other._size = tmp_size;
 		}
@@ -161,7 +154,7 @@ namespace ft
 		void _erase(node_pointer &node, const value_type &data)
 		{
 			if (!node)
-				return ;
+				return;
 			if (node->data.first == data.first)
 			{
 				if (!node->left || !node->right)
@@ -173,7 +166,7 @@ namespace ft
 						tmp = node->left;
 					if (tmp)
 						tmp->parent = node->_parent;
-					_alloc.deallocate(node, 1);
+					_allocator.deallocate(node, 1);
 					node = tmp;
 					_size--;
 					return ;
@@ -183,13 +176,13 @@ namespace ft
 					if (node->left->height > node->right->height)
 					{
 						value_type value(get_max(node->left)->data);
-						_alloc.construct(node, value);
+						_allocator.construct(node, value);
 						_erase(node->left, value);
 					}
 					else
 					{
 						value_type value(get_min(node->right)->data);
-						_alloc.construct(node, value);
+						_allocator.construct(node, value);
 						_erase(node->right, value);
 					}
 				}
@@ -198,15 +191,15 @@ namespace ft
 				_erase(node->left, data);
 			else
 				_erase(node->right, data);
-			update(node);
-			balance(node);
+			_update_node_info(node);
+			_balance(node);
 		}
 		void _insert(const value_type& data, node_pointer  &node, node_pointer & parent)
 		{
 			if (!node)
 			{
-				node = _alloc.allocate(1);
-				_alloc.construct(node, data, 0);
+				node = _allocator.allocate(1);
+				_allocator.construct(node, data, 0);
 				node->parent = parent;
 				_size++;
 				return ;
@@ -215,10 +208,10 @@ namespace ft
 				_insert(data, node->left, node);
 			else
 				_insert(data, node->right, node);
-			update(node);
-			balance(node);
+			_update_node_info(node);
+			_balance(node);
 		}
-		node_pointer 	_find_node(const value_type& data, node_pointer & node)
+		node_pointer _find_node(const value_type& data, node_pointer & node)
 		{
 			if (!node || node == _ptr)
 				return (_ptr);
@@ -256,49 +249,35 @@ namespace ft
 			{
 				_clear(node->left);
 				_clear(node->right);
-				_alloc.deallocate(node, 1);
+				_allocator.deallocate(node, 1);
 				node = NULL;
 			}
 		}
-		void	update(node_pointer node)
+		void _update_node_info(node_pointer node)
 		{
 			int	left_height = node->_left ? node->_left->_height : -1;
 			int	right_height = node->_right ? node->_right->_height : -1;
 			node->height = 1 + ((left_height > right_height) ? left_height : right_height);
-			node->balanceFactor = right_height - left_height;
+			node->_balance = right_height - left_height;
 		}
-		void	balance(node_pointer  &node)
+		void _balance(node_pointer  &node)
 		{
-			if (node->balanceFactor < -1)
+			if (node->balance < -1)
 			{
-				if (node->left->balanceFactor <= 0)
-					leftLeftCase(node);
+				if (node->left->balance > 0)
+					_rotate_left_right(node);
 				else
-					leftRightCase(node);
+					_rotate_right(node);
 			}
-			else if (node->balanceFactor > 1)
+			else if (node->balance > 1)
 			{
-				if (node->right->balanceFactor >= 0)
-					rightRightCase(node);
+				if (node->right->balance < 0)
+					_rotate_right_left(node);
 				else
-					rightLeftCase(node);
+					_rotate_left(node);
 			}
 		}
-		void	leftRotation(node_pointer  &node)
-		{
-			node_pointer 	parent = node->parent;
-			node_pointer 	root = node->right;
-			node->right = root->left;
-			if (node->right)
-				node->right->parent = node;
-			node->parent = root;
-			root->left = node;
-			root->parent = parent;
-			node = root;
-			update(node->left);
-			update(node);
-		}		
-		void	rightRotation(node_pointer  &node)
+		void _rotate_right(node_pointer  &node)
 		{
 			node_pointer 	parent = node->parent;
 			node_pointer 	root = node->left;
@@ -309,27 +288,32 @@ namespace ft
 			root->right = node;
 			root->parent = parent;
 			node = root;
-			update(node->right);
-			update(node);
-		}		
-		void	leftLeftCase(node_pointer  &node)
-		{
-			rightRotation(node);
+			_update_node_info(node->right);
+			_update_node_info(node);
 		}
-		void	leftRightCase(node_pointer  &node)
+		void _rotate_left(node_pointer  &node)
 		{
-			leftRotation(node->left);
-			rightRotation(node);
+			node_pointer 	parent = node->parent;
+			node_pointer 	root = node->right;
+			node->right = root->left;
+			if (node->right)
+				node->right->parent = node;
+			node->parent = root;
+			root->left = node;
+			root->parent = parent;
+			node = root;
+			_update_node_info(node->left);
+			_update_node_info(node);
 		}
-		void	rightRightCase(node_pointer  &node)
+		void	_rotate_right_left(node_pointer  &node)
 		{
-			leftRotation(node);
-			
+			_rotate_right(node->right);
+			_rotate_left(node);
 		}
-		void	rightLeftCase(node_pointer  &node)
+		void	_rotate_left_right(node_pointer  &node)
 		{
-			rightRotation(node->right);
-			leftRotation(node);
+			_rotate_left(node->left);
+			_rotate_right(node);
 		}
 	};
 }
