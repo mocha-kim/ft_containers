@@ -6,13 +6,9 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 21:56:08 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/08/17 16:52:36 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/08/22 19:00:08 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
-/* https://github.com/axel-bittel/42-ft_containers/blob/master/include/map.hpp */
-/* https://github.com/Conanyedo/Ft_Containers/blob/master/map.hpp */
 
 #ifndef FT_MAP_HPP
 #define FT_MAP_HPP

@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 17:19:41 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/08/22 17:21:47 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/08/22 19:57:42 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ namespace ft
 		int			_balance;
 
 		tree_node(T d, node_pointer parent = NULL, node_pointer left = NULL, node_pointer right = NULL)
-		: _data(d), _height(1), _parent(parent), _left(left), _right(right), _balance(NONE) {}
+		: _data(d), _height(1), _parent(parent), _left(left), _right(right), _balance(0) {}
 		tree_node(const tree_node &other)
 		: _data(other._data), _height(other._height)
-		, _parent(other._parent), _left(other._left), _right(other._right), _balance(NONE) {}
+		, _parent(other._parent), _left(other._left), _right(other._right), _balance(0) {}
 	}; // struct node
 
 	/*   tree	*/
@@ -55,6 +55,9 @@ namespace ft
 		size_type		_size;
 
 	public:
+		/*
+		** Constructors, Distructor
+		*/
 		avl_tree(const allocator_type& alloc = allocator_type(), const key_compare& cmp = key_compare())
 		: _root(NULL), _ptr(NULL), _allocator(alloc), _compare(cmp), _size(0) {}
 		~avl_tree()
@@ -64,6 +67,9 @@ namespace ft
 			_ptr = NULL;
 		}
 		
+		/*
+		** Capacity
+		*/
 		size_type size() const { return _size; }
 		size_type max_size() const { return _allocator.max_size(); }
 		allocator_type get_allocator() const { return this->_allocator; }
@@ -91,9 +97,9 @@ namespace ft
 			node_pointer node = get_min();
 			while (node != _ptr)
 			{
-				if (!_compare(node->data.first, data.first))
+				if (!_compare(node->data, data))
 					return (node);
-				node = successor(node);
+				node = _find_next_node(node);
 			}
 			return _ptr;
 		}
@@ -102,11 +108,25 @@ namespace ft
 			node_pointer node = get_min();
 			while (node != _ptr)
 			{
-				if (_compare(data.first, node->data.first))
+				if (_compare(data, node->data))
 					return (node);
-				node = successor(node);
+				node = _find_next_node(node);
 			}
 			return _ptr;
+		}
+		node_pointer find(const value_type &data)
+		{
+			return _find_node(data, _root);
+		}
+
+		/*
+		** Modifiers
+		*/
+		void insert(const value_type data)
+		{
+			_insert(data, _root, _ptr);
+			_ptr->left = _root;
+			_root->parent = _ptr;
 		}
 		void swap(avl_tree &other)
 		{
@@ -133,16 +153,6 @@ namespace ft
 			_clear(_root);
 			_size = 0;
 		}
-		node_pointer find(const value_type &data)
-		{
-			return _find_node(data, _root);
-		}
-		void insert(const value_type data)
-		{
-			_insert(data, _root, _ptr);
-			_ptr->left = _root;
-			_root->parent = _ptr;
-		}
 		void erase(const value_type &data)
 		{
 			_erase(_root, data);
@@ -151,6 +161,46 @@ namespace ft
 				_root->parent = _ptr;
 		}
 	private:
+		/*
+		** Finders
+		*/
+
+		node_pointer _find_node(const value_type& data, node_pointer & node)
+		{
+			if (!node || node == _ptr)
+				return (_ptr);
+			if (data.first == node->data.first)
+				return (node);
+			if (_cmp(data.first, node->data.first))
+				return _find_node(data, node->left);
+			else
+				return _find_node(data, node->right);
+		}
+		node_pointer _find_next_node(node_pointer node)
+		{
+			node_pointer parent = node->parent;
+			node_pointer tmp = node;
+			if (tmp->right)
+			{
+				tmp = tmp->right;
+				while (tmp->left)
+					tmp = tmp->left;
+				return tmp;
+			}
+			else
+			{
+				while (parent && tmp == parent->right)
+				{
+					tmp = parent;
+					parent = tmp->parent;
+				}
+				return (parent);
+			}
+		}
+
+		/*
+		** Modifiers
+		*/
 		void _erase(node_pointer &node, const value_type &data)
 		{
 			if (!node)
@@ -211,39 +261,7 @@ namespace ft
 			_update_node_info(node);
 			_balance(node);
 		}
-		node_pointer _find_node(const value_type& data, node_pointer & node)
-		{
-			if (!node || node == _ptr)
-				return (_ptr);
-			if (data.first == node->data.first)
-				return (node);
-			if (_cmp(data.first, node->data.first))
-				return _find_node(data, node->left);
-			else
-				return _find_node(data, node->right);
-		}
-		node_pointer successor(node_pointer node)
-		{
-			node_pointer parent = node->parent;
-			node_pointer tmp = node;
-			if (tmp->right)
-			{
-				tmp = tmp->right;
-				while (tmp->left)
-					tmp = tmp->left;
-				return tmp;
-			}
-			else
-			{
-				while (parent && tmp == parent->right)
-				{
-					tmp = parent;
-					parent = tmp->parent;
-				}
-				return (parent);
-			}
-		}
-		void _clear(node_pointer  &node)
+		void _clear(node_pointer &node)
 		{
 			if (node)
 			{
@@ -253,6 +271,10 @@ namespace ft
 				node = NULL;
 			}
 		}
+
+		/*
+		** avl tree balance
+		*/
 		void _update_node_info(node_pointer node)
 		{
 			int	left_height = node->_left ? node->_left->_height : -1;
@@ -260,60 +282,67 @@ namespace ft
 			node->height = 1 + ((left_height > right_height) ? left_height : right_height);
 			node->_balance = right_height - left_height;
 		}
-		void _balance(node_pointer  &node)
+		int _get_balance_factor(node_pointer node)
 		{
+			if (n == NULL)
+				return 0;
+			return n->left->height - n->right->height;
+		}
+		void _balance(node_pointer &node)
+		{
+			int balance_factor = _get_balance_factor(node);
 			if (node->balance < -1)
 			{
-				if (node->left->balance > 0)
-					_rotate_left_right(node);
-				else
+				if (node->left->balance > 0)	// LRC
+				{
+					_rotate_left(node->left);
+					_rotate_right(node);
+				}
+				else							// LLC
 					_rotate_right(node);
 			}
 			else if (node->balance > 1)
 			{
-				if (node->right->balance < 0)
-					_rotate_right_left(node);
-				else
+				if (node->right->balance < 0)	// RLC
+				{
+					_rotate_right(node->right);
+					_rotate_left(node);
+				}
+				else							// RRC
 					_rotate_left(node);
 			}
 		}
-		void _rotate_right(node_pointer  &node)
+		void _rotate_right(node_pointer &z)
 		{
-			node_pointer 	parent = node->parent;
-			node_pointer 	root = node->left;
-			node->left = root->right;
-			if (node->left)
-				node->left->parent = node;
-			node->parent = root;
-			root->right = node;
-			root->parent = parent;
-			node = root;
-			_update_node_info(node->right);
-			_update_node_info(node);
+			node_pointer parent = z->_parent;
+			node_pointer y = z->_left;
+			node_pointer subtree = y->_right;
+			
+			y->_right = z;
+			y->_parent = parent;
+			z->_left = subtree;
+			z->_parent = y;
+			if (subtree)
+				subtree->_parent = z;
+			
+			_update_node_info(z);
+			_update_node_info(y);
 		}
-		void _rotate_left(node_pointer  &node)
+		void _rotate_left(node_pointer &z)
 		{
-			node_pointer 	parent = node->parent;
-			node_pointer 	root = node->right;
-			node->right = root->left;
-			if (node->right)
-				node->right->parent = node;
-			node->parent = root;
-			root->left = node;
-			root->parent = parent;
-			node = root;
-			_update_node_info(node->left);
-			_update_node_info(node);
-		}
-		void	_rotate_right_left(node_pointer  &node)
-		{
-			_rotate_right(node->right);
-			_rotate_left(node);
-		}
-		void	_rotate_left_right(node_pointer  &node)
-		{
-			_rotate_left(node->left);
-			_rotate_right(node);
+			node_pointer parent = z->_parent;
+			node_pointer y = z->_right;
+			node_pointer subtree = y->_left;
+
+			y->_left = z;
+			y->_parent = parent;
+			z->_right = subtree;
+			z->_parent = y;
+			if (subtree)
+				subtree->_parent = z;
+
+			_update_node_info(z);
+			_update_node_info(y);
 		}
 	};
 }
