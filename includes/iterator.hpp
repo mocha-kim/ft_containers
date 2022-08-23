@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 17:14:12 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/08/05 23:34:04 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/08/23 15:10:46 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ namespace ft
 		typedef typename It::difference_type	difference_type;
     	typedef typename It::pointer			pointer;
     	typedef typename It::reference			reference;
-    	typedef typename It::iterator_category	iterator_category;
 	}; // struct iterator_traits
 
 	template <class T>
@@ -32,7 +31,6 @@ namespace ft
 		typedef ptrdiff_t	difference_type;
 		typedef T*			pointer;
 		typedef T&			reference;
-		typedef std::random_access_iterator_tag	iterator_category;
 	}; // struct iterator_traits<T*>
 
 	template <class T>
@@ -42,7 +40,6 @@ namespace ft
 		typedef ptrdiff_t	difference_type;
 		typedef const T*	pointer;
 		typedef const T&	reference;
-		typedef std::random_access_iterator_tag	iterator_category;
 	}; // struct iterator_traits<const T*>
 
 	template <typename T>
