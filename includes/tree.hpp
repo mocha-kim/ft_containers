@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 17:19:41 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/08/22 19:57:42 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/08/23 14:52:00 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,21 @@ namespace ft
 	template <class T>
 	struct tree_node
 	{
-		T			_data;
-		tree_node	*_parent;
-		tree_node	*_left;
-		tree_node	*_right;
-		int			_height;
-		int			_balance;
+		ft::pair<int, T>	_data;
+		tree_node			*_parent;
+		tree_node			*_left;
+		tree_node			*_right;
+		int					_height;
+		int					_balance;
 
-		tree_node(T d, node_pointer parent = NULL, node_pointer left = NULL, node_pointer right = NULL)
-		: _data(d), _height(1), _parent(parent), _left(left), _right(right), _balance(0) {}
+		tree_node(ft::pair d, tree_node *parent = NULL, tree_node *left = NULL, tree_node *right = NULL)
+		: _data(d), _height(1), _parent(parent), _left(left), _right(right), _balance(0)
+		{}
+
 		tree_node(const tree_node &other)
 		: _data(other._data), _height(other._height)
-		, _parent(other._parent), _left(other._left), _right(other._right), _balance(0) {}
+		, _parent(other._parent), _left(other._left), _right(other._right), _balance(0)
+		{}
 	}; // struct node
 
 	/*   tree	*/
@@ -79,8 +82,8 @@ namespace ft
 			node_pointer tmp = node;
 			if (!tmp)
 				tmp = _root;
-			while (tmp && tmp->left)
-				tmp = tmp->left;
+			while (tmp && tmp->_left)
+				tmp = tmp->_left;
 			return tmp;
 		}
 		node_pointer get_max(node_pointer node = NULL) const
@@ -88,8 +91,8 @@ namespace ft
 			node_pointer tmp = node;
 			if (!tmp)
 				tmp = _root;
-			while (tmp && tmp->right)
-				tmp = tmp->right;
+			while (tmp && tmp->_right)
+				tmp = tmp->_right;
 			return tmp;
 		}
 		node_pointer lower_bound(const value_type &data)
@@ -97,7 +100,7 @@ namespace ft
 			node_pointer node = get_min();
 			while (node != _ptr)
 			{
-				if (!_compare(node->data, data))
+				if (!_compare(node->_data.first, data))
 					return (node);
 				node = _find_next_node(node);
 			}
@@ -108,7 +111,7 @@ namespace ft
 			node_pointer node = get_min();
 			while (node != _ptr)
 			{
-				if (_compare(data, node->data))
+				if (_compare(data, node->_data.first))
 					return (node);
 				node = _find_next_node(node);
 			}
@@ -125,8 +128,8 @@ namespace ft
 		void insert(const value_type data)
 		{
 			_insert(data, _root, _ptr);
-			_ptr->left = _root;
-			_root->parent = _ptr;
+			_ptr->_left = _root;
+			_root->_parent = _ptr;
 		}
 		void swap(avl_tree &other)
 		{
@@ -156,9 +159,9 @@ namespace ft
 		void erase(const value_type &data)
 		{
 			_erase(_root, data);
-			_ptr->left = _root;
+			_ptr->_left = _root;
 			if (_root)
-				_root->parent = _ptr;
+				_root->_parent = _ptr;
 		}
 	private:
 		/*
@@ -169,30 +172,30 @@ namespace ft
 		{
 			if (!node || node == _ptr)
 				return (_ptr);
-			if (data.first == node->data.first)
+			if (data == node->_data.first)
 				return (node);
-			if (_cmp(data.first, node->data.first))
-				return _find_node(data, node->left);
+			if (_cmp(data, node->_data.first))
+				return _find_node(data, node->_left);
 			else
-				return _find_node(data, node->right);
+				return _find_node(data, node->_right);
 		}
 		node_pointer _find_next_node(node_pointer node)
 		{
-			node_pointer parent = node->parent;
+			node_pointer parent = node->_parent;
 			node_pointer tmp = node;
-			if (tmp->right)
+			if (tmp->_right)
 			{
-				tmp = tmp->right;
-				while (tmp->left)
-					tmp = tmp->left;
+				tmp = tmp->_right;
+				while (tmp->_left)
+					tmp = tmp->_left;
 				return tmp;
 			}
 			else
 			{
-				while (parent && tmp == parent->right)
+				while (parent && tmp == parent->_right)
 				{
 					tmp = parent;
-					parent = tmp->parent;
+					parent = tmp->_parent;
 				}
 				return (parent);
 			}
@@ -205,17 +208,17 @@ namespace ft
 		{
 			if (!node)
 				return;
-			if (node->data.first == data.first)
+			if (node->_data.first == data)
 			{
-				if (!node->left || !node->right)
+				if (!node->_left || !node->_right)
 				{
 					node_pointer  tmp;
-					if (node->right)
-						tmp = node->right;
+					if (node->_right)
+						tmp = node->_right;
 					else
-						tmp = node->left;
+						tmp = node->_left;
 					if (tmp)
-						tmp->parent = node->_parent;
+						tmp->_parent = node->_parent;
 					_allocator.deallocate(node, 1);
 					node = tmp;
 					_size--;
@@ -223,41 +226,41 @@ namespace ft
 				}
 				else
 				{
-					if (node->left->height > node->right->height)
+					if (node->_left->_height > node->_right->_height)
 					{
-						value_type value(get_max(node->left)->data);
+						value_type value(get_max(node->_left)->_data.first);
 						_allocator.construct(node, value);
-						_erase(node->left, value);
+						_erase(node->_left, value);
 					}
 					else
 					{
-						value_type value(get_min(node->right)->data);
+						value_type value(get_min(node->_right)->_data.first);
 						_allocator.construct(node, value);
-						_erase(node->right, value);
+						_erase(node->_right, value);
 					}
 				}
 			}
-			else if (_cmp(data.first, node->data.first))
-				_erase(node->left, data);
+			else if (_cmp(data, node->_data.first))
+				_erase(node->_left, data);
 			else
-				_erase(node->right, data);
+				_erase(node->_right, data);
 			_update_node_info(node);
 			_balance(node);
 		}
-		void _insert(const value_type& data, node_pointer  &node, node_pointer & parent)
+		void _insert(const value_type &data, node_pointer &node, node_pointer &parent)
 		{
 			if (!node)
 			{
 				node = _allocator.allocate(1);
 				_allocator.construct(node, data, 0);
-				node->parent = parent;
+				node->_parent = parent;
 				_size++;
 				return ;
 			}
-			if (_cmp(data.first, node->data.first))
-				_insert(data, node->left, node);
+			if (_cmp(data, node->_data.first))
+				_insert(data, node->_left, node);
 			else
-				_insert(data, node->right, node);
+				_insert(data, node->_right, node);
 			_update_node_info(node);
 			_balance(node);
 		}
@@ -265,8 +268,8 @@ namespace ft
 		{
 			if (node)
 			{
-				_clear(node->left);
-				_clear(node->right);
+				_clear(node->_left);
+				_clear(node->_right);
 				_allocator.deallocate(node, 1);
 				node = NULL;
 			}
@@ -279,33 +282,33 @@ namespace ft
 		{
 			int	left_height = node->_left ? node->_left->_height : -1;
 			int	right_height = node->_right ? node->_right->_height : -1;
-			node->height = 1 + ((left_height > right_height) ? left_height : right_height);
+			node->_height = 1 + ((left_height > right_height) ? left_height : right_height);
 			node->_balance = right_height - left_height;
 		}
 		int _get_balance_factor(node_pointer node)
 		{
 			if (n == NULL)
 				return 0;
-			return n->left->height - n->right->height;
+			return n->_left->_height - n->_right->_height;
 		}
 		void _balance(node_pointer &node)
 		{
 			int balance_factor = _get_balance_factor(node);
-			if (node->balance < -1)
+			if (node->_balance < -1)
 			{
-				if (node->left->balance > 0)	// LRC
+				if (node->_left->_balance > 0)	// LRC
 				{
-					_rotate_left(node->left);
+					_rotate_left(node->_left);
 					_rotate_right(node);
 				}
 				else							// LLC
 					_rotate_right(node);
 			}
-			else if (node->balance > 1)
+			else if (node->_balance > 1)
 			{
-				if (node->right->balance < 0)	// RLC
+				if (node->_right->_balance < 0)	// RLC
 				{
-					_rotate_right(node->right);
+					_rotate_right(node->_right);
 					_rotate_left(node);
 				}
 				else							// RRC

@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 17:34:39 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/08/10 14:35:13 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/08/23 14:49:04 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ namespace ft
 		{}
 
 		template<class U, class V>
-		pair (const pair<U, V>& copy)
+		pair(const pair<U, V>& copy)
 		: first(copy.first), second(copy.second)
 		{}
 
-		pair (const first_type& fir, const second_type& sec)
+		pair(const first_type& fir, const second_type& sec)
 		: first(fir), second(sec)
 		{}
 
