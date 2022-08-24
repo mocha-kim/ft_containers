@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 15:02:03 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/08/23 15:44:37 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/08/24 21:34:07 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,82 +36,82 @@ namespace ft
 	public:
 		map_iterator() : _node(NULL) {}
 		explicit map_iterator(node_pointer node) : _node(node) {}
-		template <class Iter>
-		map_iterator (const map_iterator<Iter>& it) : node(it.node) {}
-		nodePtr base() const{return node;}
-		reference operator*() const{return node->data;}
-		pointer operator->() const {return (&(node->data));}
-		mapiterator& operator++()
+		template <class T>
+		map_iterator (const map_iterator<T>& other) : node(other._node) {}
+		node_pointer base() const{return _node;}
+		reference operator*() const{return _node->_data;}
+		pointer operator->() const {return &(_node->_data);}
+		map_iterator& operator++()
 		{
-			node = successor();
+			_node = _find_next_node();
 			return (*this);
 		}
-		mapiterator operator++(int)
+		map_iterator operator++(int)
 		{
-			mapiterator tmp(*this);
+			map_iterator tmp(*this);
 			++(*this);
 			return (tmp);
 		}
-		mapiterator& operator--()
+		map_iterator& operator--()
 		{
-			node = predecessor();
+			_node = _find_pre_node();
 			return (*this);
 		}
-		mapiterator operator--(int)
+		map_iterator operator--(int)
 		{
-			mapiterator tmp(*this);
+			map_iterator tmp(*this);
 			--(*this);
 			return (tmp);
 		}
 	private:
-		nodePtr	successor()
+		node_pointer _find_next_node()
 		{
-			nodePtr	parent = node->parent;
-			nodePtr	tmp = node;
-			if (tmp->right)
+			node_pointer parent = _node->_parent;
+			node_pointer tmp = _node;
+			if (tmp->_right)
 			{
-				tmp = tmp->right;
-				while (tmp->left)
-					tmp = tmp->left;
+				tmp = tmp->_right;
+				while (tmp->_left)
+					tmp = tmp->_left;
 				return tmp;
 			}
 			else
 			{
-				while (parent && tmp == parent->right)
+				while (parent && tmp == parent->_right)
 				{
 					tmp = parent;
-					parent = tmp->parent;
+					parent = tmp->_parent;
 				}
-				return (parent);
+				return parent;
 			}
 		}
-		nodePtr	predecessor()
+		node_pointer _find_pre_node()
 		{
-			nodePtr	parent = node->parent;
-			nodePtr	tmp = node;
-			if (tmp->left)
+			node_pointer parent = _node->_parent;
+			node_pointer tmp = _node;
+			if (tmp->_left)
 			{
-				tmp = tmp->left;
-				while (tmp->right)
-					tmp = tmp->right;
+				tmp = tmp->_left;
+				while (tmp->_right)
+					tmp = tmp->_right;
 				return tmp;
 			}
 			else
 			{
-				while (parent && tmp == parent->left)
+				while (parent && tmp == parent->_left)
 				{
 					tmp = parent;
-					parent = tmp->parent;
+					parent = tmp->_parent;
 				}
-				return (parent);
+				return parent;
 			}
 		}
 	};
 	
-	template <class It>
-	bool operator== (const map_iterator<It>& lhs, const map_iterator<It>& rhs) { return (lhs.base() == rhs.base()); }
-	template <class It>
-	bool operator!= (const map_iterator<It>& lhs, const map_iterator<It>& rhs) { return (lhs.base() != rhs.base()); }
+	template <class T>
+	bool operator== (const map_iterator<T>& lhs, const map_iterator<T>& rhs) { return (lhs.base() == rhs.base()); }
+	template <class T>
+	bool operator!= (const map_iterator<T>& lhs, const map_iterator<T>& rhs) { return (lhs.base() != rhs.base()); }
 }
 
 #endif

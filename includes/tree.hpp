@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 17:19:41 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/08/23 15:00:45 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/08/24 21:34:42 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ namespace ft
 					tmp = parent;
 					parent = tmp->_parent;
 				}
-				return (parent);
+				return parent;
 			}
 		}
 
