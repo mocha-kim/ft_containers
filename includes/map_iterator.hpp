@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 15:02:03 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/08/24 21:34:07 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/08/24 22:34:45 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ namespace ft
 		explicit map_iterator(node_pointer node) : _node(node) {}
 		template <class T>
 		map_iterator (const map_iterator<T>& other) : node(other._node) {}
-		node_pointer base() const{return _node;}
-		reference operator*() const{return _node->_data;}
-		pointer operator->() const {return &(_node->_data);}
+		node_pointer base() const { return _node; }
+		reference operator*() const { return _node->_data; }
+		pointer operator->() const { return &(_node->_data); }
 		map_iterator& operator++()
 		{
 			_node = _find_next_node();

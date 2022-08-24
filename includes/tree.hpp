@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 17:19:41 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/08/24 21:34:42 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/08/24 22:45:44 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <memory>
 #include "utility.hpp"
+#include "algorithm.hpp"
 
 namespace ft
 {
@@ -52,7 +53,7 @@ namespace ft
 
 	private:
 		tree_node	*_root;
-		tree_node	*_ptr;
+		tree_node	*_end;
 		allocator_type	_allocator;
 		key_compare		_compare;
 		size_type		_size;
@@ -62,12 +63,12 @@ namespace ft
 		** Constructors, Distructor
 		*/
 		avl_tree(const allocator_type& alloc = allocator_type(), const key_compare& cmp = key_compare())
-		: _root(NULL), _ptr(NULL), _allocator(alloc), _compare(cmp), _size(0) {}
+		: _root(NULL), _end(NULL), _allocator(alloc), _compare(cmp), _size(0) {}
 		~avl_tree()
 		{
 			_clear();
-			_allocator.deallocate(_ptr, 1);
-			_ptr = NULL;
+			_allocator.deallocate(_end, 1);
+			_end = NULL;
 		}
 		
 		/*
@@ -76,7 +77,7 @@ namespace ft
 		size_type size() const { return _size; }
 		size_type max_size() const { return _allocator.max_size(); }
 		allocator_type get_allocator() const { return this->_allocator; }
-		node_pointer get_ptr() const { return this->_ptr; }
+		node_pointer get_end() const { return this->_end; }
 		node_pointer get_min(node_pointer node = NULL) const
 		{
 			node_pointer tmp = node;
@@ -98,24 +99,24 @@ namespace ft
 		node_pointer lower_bound(const value_type &data)
 		{
 			node_pointer node = get_min();
-			while (node != _ptr)
+			while (node != _end)
 			{
 				if (!_compare(node->_data.first, data))
 					return (node);
 				node = _find_next_node(node);
 			}
-			return _ptr;
+			return _end;
 		}
 		node_pointer upper_bound(const value_type& data)
 		{
 			node_pointer node = get_min();
-			while (node != _ptr)
+			while (node != _end)
 			{
 				if (_compare(data, node->_data.first))
 					return (node);
 				node = _find_next_node(node);
 			}
-			return _ptr;
+			return _end;
 		}
 		node_pointer find(const value_type &data)
 		{
@@ -127,29 +128,17 @@ namespace ft
 		*/
 		void insert(const value_type data)
 		{
-			_insert(data, _root, _ptr);
-			_ptr->_left = _root;
-			_root->_parent = _ptr;
+			_insert(data, _root, _end);
+			_end->_left = _root;
+			_root->_parent = _end;
 		}
 		void swap(avl_tree &other)
 		{
-			node_pointer	tmp_root = _root;
-			node_pointer	tmp_ptr = _ptr;
-			allocator_type	tmp_alloc = _allocator;
-			key_compare		tmp_compare = _compare;
-			size_type		tmp_size = _size;
-
-			this->_root = other._root;
-			this->_ptr = other._ptr;
-			this->_allocator = other._allocator;
-			this->_compare = other._cmp;
-			this->_size = other._size;
-			
-			other._root = tmp_root;
-			other._ptr = tmp_ptr;
-			other._allocator = tmp_alloc;
-			other._compare = tmp_compare;
-			other._size = tmp_size;
+			ft::swap(_root, other._root);
+			ft::swap(_end, other._end);
+			ft::swap(_allocator, other._allocator);
+			ft::swap(_compare, other._compare);
+			ft::swap(_size, other._size);
 		}
 		void clear()
 		{
@@ -159,9 +148,9 @@ namespace ft
 		void erase(const value_type &data)
 		{
 			_erase(_root, data);
-			_ptr->_left = _root;
+			_end->_left = _root;
 			if (_root)
-				_root->_parent = _ptr;
+				_root->_parent = _end;
 		}
 	private:
 		/*
@@ -170,8 +159,8 @@ namespace ft
 
 		node_pointer _find_node(const value_type& data, node_pointer & node)
 		{
-			if (!node || node == _ptr)
-				return (_ptr);
+			if (!node || node == _end)
+				return (_end);
 			if (data == node->_data.first)
 				return (node);
 			if (_cmp(data, node->_data.first))
