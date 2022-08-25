@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 17:19:41 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/08/24 22:45:44 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/08/25 18:13:13 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,27 @@ namespace ft
 	template <class T>
 	struct tree_node
 	{
-		ft::pair<int, T>	_data;
+		T					_data;
 		tree_node			*_parent;
 		tree_node			*_left;
 		tree_node			*_right;
 		int					_height;
 		int					_balance;
 
-		tree_node(ft::pair d, tree_node *parent = NULL, tree_node *left = NULL, tree_node *right = NULL)
-		: _data(d), _height(1), _parent(parent), _left(left), _right(right), _balance(0)
+		tree_node()
+		: _parent(NULL), _left(NULL), _right(NULL)
 		{}
-
+		tree_node(const T &d, const int h)
+		: _data(d), _parent(NULL), _left(NULL), _right(NULL)
+		, _height(h), _balance(0)
+		{}
+		tree_node(const T &d, tree_node *p = NULL, tree_node *l = NULL, tree_node *r = NULL)
+		: _data(d), _parent(p), _left(l), _right(r)
+		, _height(1), _balance(0)
+		{}
 		tree_node(const tree_node &other)
-		: _data(other._data), _height(other._height)
-		, _parent(other._parent), _left(other._left), _right(other._right), _balance(0)
+		: _data(other._data), _parent(other._parent), _left(other._left), _right(other._right)
+		, _height(other._height), _balance(0)
 		{}
 	}; // struct node
 
@@ -45,15 +52,15 @@ namespace ft
 	class avl_tree
 	{
 	public:
-		typedef T			value_type;
-        typedef Compare		key_compare;
-		typedef Alloc		allocator_type;
-		typedef std::size_t	size_type;
-		typedef tree_node<T>	*node_pointer;
+		typedef typename Alloc::template rebind<tree_node<T> >::other	allocator_type;
+		typedef T														value_type;
+        typedef Compare													key_compare;
+		typedef typename allocator_type::size_type						size_type;
+		typedef tree_node<T>											*node_pointer;
 
 	private:
-		tree_node	*_root;
-		tree_node	*_end;
+		node_pointer	_root;
+		node_pointer	_end;
 		allocator_type	_allocator;
 		key_compare		_compare;
 		size_type		_size;
@@ -66,7 +73,7 @@ namespace ft
 		: _root(NULL), _end(NULL), _allocator(alloc), _compare(cmp), _size(0) {}
 		~avl_tree()
 		{
-			_clear();
+			clear();
 			_allocator.deallocate(_end, 1);
 			_end = NULL;
 		}
@@ -241,12 +248,12 @@ namespace ft
 			if (!node)
 			{
 				node = _allocator.allocate(1);
-				_allocator.construct(node, data, 0);
+				_allocator.construct(node, data);
 				node->_parent = parent;
 				_size++;
 				return ;
 			}
-			if (_cmp(data, node->_data.first))
+			if (_compare(data, node->_data.first))
 				_insert(data, node->_left, node);
 			else
 				_insert(data, node->_right, node);
@@ -274,15 +281,8 @@ namespace ft
 			node->_height = 1 + ((left_height > right_height) ? left_height : right_height);
 			node->_balance = right_height - left_height;
 		}
-		int _get_balance_factor(node_pointer node)
-		{
-			if (n == NULL)
-				return 0;
-			return n->_left->_height - n->_right->_height;
-		}
 		void _balance(node_pointer &node)
 		{
-			int balance_factor = _get_balance_factor(node);
 			if (node->_balance < -1)
 			{
 				if (node->_left->_balance > 0)	// LRC

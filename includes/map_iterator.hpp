@@ -6,20 +6,18 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 15:02:03 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/08/24 22:34:45 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/08/25 17:39:02 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef _FT_MAP_ITERATOR_HPP
 #define _FT_MAP_ITERATOR_HPP
 
-#include <cstddef>
 #include "iterator.hpp"
-#include "tree.hpp"
 
 namespace ft
 {
-	template <class T>
+	template <class T, class NodePointer>
 	class map_iterator
 	{
 	public:
@@ -28,46 +26,44 @@ namespace ft
 		typedef typename iterator_traits<T>::pointer			pointer;
 		typedef typename iterator_traits<T>::reference			reference;
 		typedef	std::bidirectional_iterator_tag					iterator_category;
-		typedef tree_node<T>	*node_pointer;
 
 	protected:
-		node_pointer _node;
+		NodePointer _node;
 
 	public:
 		map_iterator() : _node(NULL) {}
-		explicit map_iterator(node_pointer node) : _node(node) {}
-		template <class T>
-		map_iterator (const map_iterator<T>& other) : node(other._node) {}
-		node_pointer base() const { return _node; }
+		explicit map_iterator(NodePointer node) : _node(node) {}
+		map_iterator (const map_iterator<T, NodePointer>& other) : _node(other._node) {}
+		NodePointer base() const { return _node; }
 		reference operator*() const { return _node->_data; }
 		pointer operator->() const { return &(_node->_data); }
 		map_iterator& operator++()
 		{
 			_node = _find_next_node();
-			return (*this);
+			return *this;
 		}
 		map_iterator operator++(int)
 		{
 			map_iterator tmp(*this);
 			++(*this);
-			return (tmp);
+			return tmp;
 		}
 		map_iterator& operator--()
 		{
 			_node = _find_pre_node();
-			return (*this);
+			return *this;
 		}
 		map_iterator operator--(int)
 		{
 			map_iterator tmp(*this);
 			--(*this);
-			return (tmp);
+			return tmp;
 		}
 	private:
-		node_pointer _find_next_node()
+		NodePointer _find_next_node()
 		{
-			node_pointer parent = _node->_parent;
-			node_pointer tmp = _node;
+			NodePointer parent = _node->_parent;
+			NodePointer tmp = _node;
 			if (tmp->_right)
 			{
 				tmp = tmp->_right;
@@ -85,10 +81,10 @@ namespace ft
 				return parent;
 			}
 		}
-		node_pointer _find_pre_node()
+		NodePointer _find_pre_node()
 		{
-			node_pointer parent = _node->_parent;
-			node_pointer tmp = _node;
+			NodePointer parent = _node->_parent;
+			NodePointer tmp = _node;
 			if (tmp->_left)
 			{
 				tmp = tmp->_left;
@@ -108,10 +104,10 @@ namespace ft
 		}
 	};
 	
-	template <class T>
-	bool operator== (const map_iterator<T>& lhs, const map_iterator<T>& rhs) { return (lhs.base() == rhs.base()); }
-	template <class T>
-	bool operator!= (const map_iterator<T>& lhs, const map_iterator<T>& rhs) { return (lhs.base() != rhs.base()); }
+	template <class T, class NodePointer>
+	bool operator== (const map_iterator<T, NodePointer>& lhs, const map_iterator<T, NodePointer>& rhs) { return (lhs.base() == rhs.base()); }
+	template <class T, class NodePointer>
+	bool operator!= (const map_iterator<T, NodePointer>& lhs, const map_iterator<T, NodePointer>& rhs) { return (lhs.base() != rhs.base()); }
 }
 
 #endif
