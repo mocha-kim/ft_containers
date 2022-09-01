@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 17:19:41 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/08/25 18:13:13 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/01 17:08:13 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,13 @@ namespace ft
 		int					_height;
 		int					_balance;
 
-		tree_node()
-		: _parent(NULL), _left(NULL), _right(NULL)
+		tree_node() : _parent(NULL), _left(NULL), _right(NULL)
+		{}
+		tree_node(const T &d) : _data(d)
 		{}
 		tree_node(const T &d, const int h)
 		: _data(d), _parent(NULL), _left(NULL), _right(NULL)
 		, _height(h), _balance(0)
-		{}
-		tree_node(const T &d, tree_node *p = NULL, tree_node *l = NULL, tree_node *r = NULL)
-		: _data(d), _parent(p), _left(l), _right(r)
-		, _height(1), _balance(0)
 		{}
 		tree_node(const tree_node &other)
 		: _data(other._data), _parent(other._parent), _left(other._left), _right(other._right)
@@ -52,9 +49,9 @@ namespace ft
 	class avl_tree
 	{
 	public:
-		typedef typename Alloc::template rebind<tree_node<T> >::other	allocator_type;
 		typedef T														value_type;
         typedef Compare													key_compare;
+		typedef typename Alloc::template rebind<tree_node<T> >::other	allocator_type;
 		typedef typename allocator_type::size_type						size_type;
 		typedef tree_node<T>											*node_pointer;
 
@@ -70,7 +67,11 @@ namespace ft
 		** Constructors, Distructor
 		*/
 		avl_tree(const allocator_type& alloc = allocator_type(), const key_compare& cmp = key_compare())
-		: _root(NULL), _end(NULL), _allocator(alloc), _compare(cmp), _size(0) {}
+		: _root(NULL), _end(NULL), _allocator(alloc), _compare(cmp), _size(0)
+		{
+			_end = _allocator.allocate(1);
+			_allocator.construct(_end);
+		}
 		~avl_tree()
 		{
 			clear();
@@ -108,7 +109,7 @@ namespace ft
 			node_pointer node = get_min();
 			while (node != _end)
 			{
-				if (!_compare(node->_data.first, data))
+				if (!_compare(node->_data.first, data.first))
 					return (node);
 				node = _find_next_node(node);
 			}
@@ -119,7 +120,7 @@ namespace ft
 			node_pointer node = get_min();
 			while (node != _end)
 			{
-				if (_compare(data, node->_data.first))
+				if (_compare(data.first, node->_data.first))
 					return (node);
 				node = _find_next_node(node);
 			}
@@ -159,6 +160,7 @@ namespace ft
 			if (_root)
 				_root->_parent = _end;
 		}
+
 	private:
 		/*
 		** Finders
@@ -168,17 +170,17 @@ namespace ft
 		{
 			if (!node || node == _end)
 				return (_end);
-			if (data == node->_data.first)
+			if (data.first == node->_data.first)
 				return (node);
-			if (_cmp(data, node->_data.first))
+			if (_compare(data.first, node->_data.first))
 				return _find_node(data, node->_left);
 			else
 				return _find_node(data, node->_right);
 		}
 		node_pointer _find_next_node(node_pointer node)
 		{
-			node_pointer parent = node->_parent;
 			node_pointer tmp = node;
+			node_pointer parent = node->_parent;
 			if (tmp->_right)
 			{
 				tmp = tmp->_right;
@@ -204,7 +206,7 @@ namespace ft
 		{
 			if (!node)
 				return;
-			if (node->_data.first == data)
+			if (node->_data.first == data.first)
 			{
 				if (!node->_left || !node->_right)
 				{
@@ -218,7 +220,7 @@ namespace ft
 					_allocator.deallocate(node, 1);
 					node = tmp;
 					_size--;
-					return ;
+					return;
 				}
 				else
 				{
@@ -230,13 +232,13 @@ namespace ft
 					}
 					else
 					{
-						value_type value(get_min(node->_right)->_data.first);
+						value_type value(get_min(node->_right)->_data);
 						_allocator.construct(node, value);
 						_erase(node->_right, value);
 					}
 				}
 			}
-			else if (_cmp(data, node->_data.first))
+			else if (_compare(data.first, node->_data.first))
 				_erase(node->_left, data);
 			else
 				_erase(node->_right, data);
@@ -248,12 +250,12 @@ namespace ft
 			if (!node)
 			{
 				node = _allocator.allocate(1);
-				_allocator.construct(node, data);
+				_allocator.construct(node, data, 0);
 				node->_parent = parent;
 				_size++;
-				return ;
+				return;
 			}
-			if (_compare(data, node->_data.first))
+			if (_compare(data.first, node->_data.first))
 				_insert(data, node->_left, node);
 			else
 				_insert(data, node->_right, node);
@@ -316,9 +318,10 @@ namespace ft
 			z->_parent = y;
 			if (subtree)
 				subtree->_parent = z;
+			z = y;
 			
+			_update_node_info(z->_right);
 			_update_node_info(z);
-			_update_node_info(y);
 		}
 		void _rotate_left(node_pointer &z)
 		{
@@ -332,9 +335,10 @@ namespace ft
 			z->_parent = y;
 			if (subtree)
 				subtree->_parent = z;
+			z = y;
 
+			_update_node_info(z->_left);
 			_update_node_info(z);
-			_update_node_info(y);
 		}
 	};
 }

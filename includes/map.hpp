@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 21:56:08 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/08/25 18:15:52 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/01 16:56:53 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,26 @@
 #define FT_MAP_HPP
 
 #include <memory>
-#include "functional.hpp"
+#include <functional>
 #include "tree.hpp"
 #include "map_iterator.hpp"
 
 namespace ft
 {
-	template <class Key, class T, class Compare = ft::less<Key>,
+	template <class Key, class T, class Compare = std::less<Key>,
 			  class Alloc = std::allocator<ft::pair<const Key, T> > >
 	class map
 	{
 	public:
-        typedef Compare				key_compare;
-        typedef Key					key_type;
-        typedef T					mapped_type;
-        typedef Alloc				allocator_type;
-        typedef pair<const Key, T>	value_type;
-		typedef std::size_t			size_type;
-		typedef std::ptrdiff_t		difference_type;
+        typedef Key			key_type;
+        typedef T			mapped_type;
+        typedef Compare		key_compare;
+        typedef Alloc		allocator_type;
+
+        typedef pair<const Key, T>							value_type;
+		typedef typename allocator_type::size_type			size_type;
+		typedef typename allocator_type::difference_type	difference_type;
+
 		typedef typename allocator_type::pointer			pointer;
 		typedef typename allocator_type::const_pointer		const_pointer;
 		typedef typename allocator_type::reference			reference;
@@ -44,13 +46,13 @@ namespace ft
 		{
             friend class map;
         protected:
-            key_compare _compare;
-            value_compare(key_compare c) : _compare(c) {}
+            key_compare compare;
+            value_compare(key_compare c) : compare(c) {}
 
         public:
             bool operator()(const value_type& x, const value_type& y) const
 			{
-                return _compare(x.first, y.first);
+                return compare(x.first, y.first);
             }
         };
 

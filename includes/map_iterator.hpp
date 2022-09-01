@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 15:02:03 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/08/25 17:39:02 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/01 16:46:59 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,15 @@ namespace ft
 		typedef typename iterator_traits<T>::pointer			pointer;
 		typedef typename iterator_traits<T>::reference			reference;
 		typedef	std::bidirectional_iterator_tag					iterator_category;
-
+		
 	protected:
 		NodePointer _node;
 
 	public:
 		map_iterator() : _node(NULL) {}
 		explicit map_iterator(NodePointer node) : _node(node) {}
-		map_iterator (const map_iterator<T, NodePointer>& other) : _node(other._node) {}
+		template <class K, class NodePtr> 
+		map_iterator (const map_iterator<K, NodePtr>& other) : _node(other.base()) {}
 		NodePointer base() const { return _node; }
 		reference operator*() const { return _node->_data; }
 		pointer operator->() const { return &(_node->_data); }
@@ -62,8 +63,8 @@ namespace ft
 	private:
 		NodePointer _find_next_node()
 		{
-			NodePointer parent = _node->_parent;
 			NodePointer tmp = _node;
+			NodePointer parent = _node->_parent;
 			if (tmp->_right)
 			{
 				tmp = tmp->_right;
