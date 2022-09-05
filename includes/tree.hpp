@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 17:19:41 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/05 19:44:40 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/05 20:02:34 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,7 +231,7 @@ namespace ft
 				{
 					if (node->_left->_height > node->_right->_height)
 					{
-						value_type value(get_max(node->_left)->_data.first);
+						value_type value(get_max(node->_left)->_data);
 						_allocator.construct(node, value);
 						_erase(node->_left, value);
 					}
