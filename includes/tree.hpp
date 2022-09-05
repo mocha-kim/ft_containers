@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 17:19:41 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/01 17:08:13 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/05 15:29:06 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ namespace ft
 				tmp = tmp->_right;
 			return tmp;
 		}
-		node_pointer lower_bound(const value_type &data)
+		node_pointer lower_bound(const value_type &data) const
 		{
 			node_pointer node = get_min();
 			while (node != _end)
@@ -115,7 +115,7 @@ namespace ft
 			}
 			return _end;
 		}
-		node_pointer upper_bound(const value_type& data)
+		node_pointer upper_bound(const value_type& data) const
 		{
 			node_pointer node = get_min();
 			while (node != _end)
@@ -126,7 +126,7 @@ namespace ft
 			}
 			return _end;
 		}
-		node_pointer find(const value_type &data)
+		node_pointer find(const value_type &data) const
 		{
 			return _find_node(data, _root);
 		}
@@ -151,6 +151,7 @@ namespace ft
 		void clear()
 		{
 			_clear(_root);
+			_end->_left = _root;
 			_size = 0;
 		}
 		void erase(const value_type &data)
@@ -166,7 +167,7 @@ namespace ft
 		** Finders
 		*/
 
-		node_pointer _find_node(const value_type& data, node_pointer & node)
+		node_pointer _find_node(const value_type &data, node_pointer node) const
 		{
 			if (!node || node == _end)
 				return (_end);
@@ -177,7 +178,7 @@ namespace ft
 			else
 				return _find_node(data, node->_right);
 		}
-		node_pointer _find_next_node(node_pointer node)
+		node_pointer _find_next_node(node_pointer node) const
 		{
 			node_pointer tmp = node;
 			node_pointer parent = node->_parent;

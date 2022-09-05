@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 21:56:08 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/01 16:56:53 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/05 15:30:24 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,12 +93,13 @@ namespace ft
 		{
 			if (this == &x)
 				return *this;
-			_tree.clear();
 
+			_tree.clear();
 			if (x.size())
 				insert(x.begin(), x.end());
 			_allocator = x._allocator;
 			_compare = x._compare;
+			return *this;
 		}
 
 		/*
@@ -151,7 +152,7 @@ namespace ft
 		}
 		iterator insert(iterator position, const value_type &value)
 		{
-			iterator donothing = position;
+			static_cast<void>(position);
 			node_pointer node = _tree.find(value);
 			if (!node || node == _tree.get_end())
 			{
@@ -225,13 +226,6 @@ namespace ft
 				return 0;
 			return 1;
 		}
-		iterator lower_bound(const key_type& k)
-		{
-			iterator ret = find(k);
-			if (ret.base() == _tree.get_end())
-				ret = iterator(_tree.lower_bound(ft::make_pair(k, mapped_type())));
-			return ret;
-		}
 		const_iterator lower_bound(const key_type& k) const
 		{
 			const_iterator ret = find(k);
@@ -239,13 +233,11 @@ namespace ft
 				ret = iterator(_tree.lower_bound(ft::make_pair(k, mapped_type())));
 			return ret;
 		}
-		iterator upper_bound(const key_type& k)
+		iterator lower_bound(const key_type& k)
 		{
 			iterator ret = find(k);
 			if (ret.base() == _tree.get_end())
 				ret = iterator(_tree.lower_bound(ft::make_pair(k, mapped_type())));
-			else
-				ret++;
 			return ret;
 		}
 		const_iterator upper_bound(const key_type& k) const
@@ -257,13 +249,22 @@ namespace ft
 				ret++;
 			return ret;
 		}
-		std::pair<iterator, iterator> equal_range(const key_type& k)
+		iterator upper_bound(const key_type& k)
+		{
+			iterator ret = find(k);
+			if (ret.base() == _tree.get_end())
+				ret = iterator(_tree.lower_bound(ft::make_pair(k, mapped_type())));
+			else
+				ret++;
+			return ret;
+		}
+		ft::pair<iterator, iterator> equal_range(const key_type& k)
 		{
 			iterator lower = lower_bound(k);
 			iterator upper = upper_bound(k);
 			return ft::make_pair<iterator, iterator>(lower, upper);
 		}
-		std::pair<const_iterator, const_iterator> equal_range(const key_type& k) const
+		ft::pair<const_iterator, const_iterator> equal_range(const key_type& k) const
 		{
 			const_iterator lower = lower_bound(k);
 			const_iterator upper = upper_bound(k);
