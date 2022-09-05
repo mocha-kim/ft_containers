@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 21:56:08 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/05 15:30:24 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/05 19:55:32 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ namespace ft
         };
 
 		typedef ft::map_iterator<pointer, node_pointer>			iterator;
-		typedef ft::map_iterator<const_pointer, node_pointer>	const_iterator;
+		typedef ft::map_iterator<pointer, node_pointer>			const_iterator;
 		typedef ft::reverse_iterator<iterator>					reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>			const_reverse_iterator;
 
@@ -165,7 +165,11 @@ namespace ft
 		void insert(InputIterator first, InputIterator last)
 		{
 			for (; first != last; first++)
-				_tree.insert(*first);
+			{
+				node_pointer node = _tree.find(*first);
+				if (!node || node == _tree.get_end())
+					_tree.insert(*first);
+			}
 		}
 		size_type erase(const key_type &k)
 		{

@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 17:19:41 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/05 15:29:06 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/05 19:44:40 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,12 +85,17 @@ namespace ft
 		size_type size() const { return _size; }
 		size_type max_size() const { return _allocator.max_size(); }
 		allocator_type get_allocator() const { return this->_allocator; }
-		node_pointer get_end() const { return this->_end; }
+		node_pointer get_end() const { return _end; }
 		node_pointer get_min(node_pointer node = NULL) const
 		{
 			node_pointer tmp = node;
 			if (!tmp)
-				tmp = _root;
+			{
+				if (_size)
+					tmp = _root;
+				else
+					return _end;
+			}
 			while (tmp && tmp->_left)
 				tmp = tmp->_left;
 			return tmp;
@@ -151,7 +156,6 @@ namespace ft
 		void clear()
 		{
 			_clear(_root);
-			_end->_left = _root;
 			_size = 0;
 		}
 		void erase(const value_type &data)
