@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 21:56:08 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/08 16:42:17 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/08 20:08:46 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ namespace ft
         typedef Compare		key_compare;
         typedef Alloc		allocator_type;
 
-        typedef pair<const Key, T>							value_type;
+		typedef	pair<const key_type, mapped_type>			value_type;
 		typedef typename allocator_type::size_type			size_type;
 		typedef typename allocator_type::difference_type	difference_type;
 
@@ -56,8 +56,8 @@ namespace ft
             }
         };
 
-		typedef ft::map_iterator<pointer, node_pointer>			iterator;
-		typedef ft::map_iterator<pointer, node_pointer>			const_iterator;
+		typedef ft::map_iterator<value_type>			iterator;
+		typedef ft::map_const_iterator<value_type>		const_iterator;
 		typedef ft::reverse_iterator<iterator>					reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>			const_reverse_iterator;
 
@@ -181,7 +181,7 @@ namespace ft
 		}
 		void erase(iterator position)
 		{
-			node_pointer node = position.base();
+			node_pointer node = position._node;
 			if (node)
 				_tree.erase(*position);
 		}
@@ -234,21 +234,21 @@ namespace ft
 		const_iterator lower_bound(const key_type& k) const
 		{
 			const_iterator ret = find(k);
-			if (ret.base() == _tree.get_end())
+			if (ret._node == _tree.get_end())
 				ret = iterator(_tree.lower_bound(ft::make_pair(k, mapped_type())));
 			return ret;
 		}
 		iterator lower_bound(const key_type& k)
 		{
 			iterator ret = find(k);
-			if (ret.base() == _tree.get_end())
+			if (ret._node == _tree.get_end())
 				ret = iterator(_tree.lower_bound(ft::make_pair(k, mapped_type())));
 			return ret;
 		}
 		const_iterator upper_bound(const key_type& k) const
 		{
 			const_iterator ret = find(k);
-			if (ret.base() == _tree.get_end())
+			if (ret._node == _tree.get_end())
 				ret = iterator(_tree.lower_bound(ft::make_pair(k, mapped_type())));
 			else
 				ret++;
@@ -257,7 +257,7 @@ namespace ft
 		iterator upper_bound(const key_type& k)
 		{
 			iterator ret = find(k);
-			if (ret.base() == _tree.get_end())
+			if (ret._node == _tree.get_end())
 				ret = iterator(_tree.lower_bound(ft::make_pair(k, mapped_type())));
 			else
 				ret++;
