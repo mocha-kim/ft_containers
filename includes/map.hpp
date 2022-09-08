@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 21:56:08 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/05 19:55:32 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/08 16:42:17 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,9 +188,10 @@ namespace ft
 		void erase(iterator first, iterator last)
 		{
 			iterator target;
-			for (; first != last; first++)
+			while (first != last)
 			{
 				target = first;
+				first++;
 				erase(target);
 				if (first == iterator(_tree.get_end()))
 					break;
