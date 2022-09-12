@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 21:56:13 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/08/17 16:53:52 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/12 14:09:36 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -307,60 +307,62 @@ namespace ft
 	bool operator==(const vector<T, Alloc> &a, const vector<T, Alloc> &b)
 	{
 		if (a.size() != b.size())
-			return (false);
+			return false;
 		unsigned long i = -1;
 		while (++i < a.size())
 		{
 			if (a[i] != b[i])
-				return (false);
+				return false;
 		}
 		return (true);
 	};
 	template<class T, class Alloc>
-	bool operator!=(const vector<T, Alloc> &a, const vector<T, Alloc> &b)
+	bool operator!=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{
-		return (!(a == b));
+		return !(lhs == rhs);
 	};
-	template <class T, class Alloc>
-	bool operator<(const vector<T,Alloc> &a, const vector<T,Alloc> &b)
-	{
-		size_t		i;
-		size_t		n;
 
-		if (a.size() > b.size())
-			n = b.size();
+	template <class T, class Alloc>
+	bool operator<(const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
+	{
+		size_t i;
+		size_t n;
+
+		if (lhs.size() > rhs.size())
+			n = rhs.size();
 		else
-			n = a.size();
+			n = lhs.size();
 		i = 0;
 		while (i < n)
 		{
-			if (a.at(i) != b.at(i))
-				return (a.at(i) < b.at(i));
+			if (lhs.at(i) != rhs.at(i))
+				return lhs.at(i) < rhs.at(i);
 			i++;
 		}
-		return (a.size() < b.size());
+		return lhs.size() < rhs.size();
+	}
+	template <class T, class Alloc>
+	bool operator>(const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
+	{
+		return !(lhs < rhs) && !(lhs == rhs);
 	}
 
 	template <class T, class Alloc>
-	bool operator<=(const vector<T,Alloc> &a, const vector<T,Alloc> &b)
+	bool operator<=(const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
 	{
-		return (a < b || a == b);
+		return !(lhs > rhs);
 	}
 	template <class T, class Alloc>
-	bool operator>(const vector<T,Alloc> &a, const vector<T,Alloc> &b)
+	bool operator>=(const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
 	{
-		return (!(a < b) && !(a == b));
+		return !(lhs < rhs);
 	}
-	template <class T, class Alloc>
-	bool operator>=(const vector<T,Alloc> &a, const vector<T,Alloc> &b)
-	{
-		return (!(a < b));
-	}
+	
 	template <class T, class Alloc>
 	void swap(vector<T, Alloc> &a, vector<T, Alloc> &b)
 	{
 		a.swap(b);
-	};
+	}
 } // namespace ft
 
 #endif
