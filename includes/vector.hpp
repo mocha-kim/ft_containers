@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 21:56:13 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/12 15:33:57 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/12 20:44:29 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ namespace ft
 				throw std::length_error("vector::reserve");
 			if (n <= this->_capacity)	
 				return;
+			n = _calc_capacity(n);
 			pointer tmp = _allocator.allocate(n);
 			_capacity = n;
 			for (size_type i = 0; i < n && i < _length; i++)
@@ -220,47 +221,64 @@ namespace ft
 		};
 		iterator insert(iterator position, const value_type &value)
 		{
-			size_type pos = position - this->begin();
-			insert(position, 1, value);
-			return iterator(this->begin() + pos);
+			size_type offset = position - this->begin();
+
+			if (_capacity < _length + 1)
+				reserve(_length + 1);
+
+			pointer cur = _container + _length;
+			pointer end = _container + offset;
+
+			for(; cur != end; cur--) 
+				_allocator.construct(cur, *(cur - 1));
+				
+			_allocator.construct(end, value);
+			_length++;
+			return (end);
 		};
 		void insert(iterator position, size_type n, const value_type &value)
 		{
-			if (position != this->end())
-			{
-				size_type pos = position - this->begin();
+			if (n == 0)
+				return;
+			
+			size_type offset = position - this->begin();
+
+			if (_capacity < _length + n)
 				reserve(_length + n);
-				for (size_type i = _length; i > pos; i--)
-					_allocator.construct(&_container[i + n - 1], _container[i - 1]);
-				for (size_type i = 0; i < n; i++)
-					_allocator.construct(&_container[pos + i], value);
-				_length += n;
-			}
-			else
-				for (size_type i = 0; i < n; i++)
-					push_back(value);
+				
+			pointer cur = _container + _length + n - 1;
+			pointer end = _container + offset + n - 1;
+		
+			for(; cur != end; cur--)
+				_allocator.construct(cur, *(cur - n));
+
+			_length += n;
+			for (size_type i = 0; i < n; i++)
+				_allocator.construct(_container + offset + n - i - 1, value);
 		};
 		template <class InputIterator>
 		void insert(iterator position, InputIterator first, InputIterator last
 			, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0)
 		{
-			difference_type idx = position - this->begin();
-			difference_type old_idx = this->end() - this->begin();
-
-			this->resize(_length + ft::distance(first, last));
+			if (first == last)
+				return;
 			
-			iterator end = this->end();
-			iterator old = this->begin() + old_idx;
-			position = this->begin() + idx;
-			for (; old != position - 1; old--)
+			difference_type offset = position - this->begin();
+			size_type n = ft::distance(first, last);
+
+			if (_capacity < _length + n)
+				reserve(_length + n);
+			
+			pointer cur = _container + _length + n - 1;
+			pointer end = _container + offset + n - 1;
+			for (; cur != end; cur--)
+				_allocator.construct(cur, *(cur - n));
+				
+			_length += n;
+			for (; n > 0; n--)
 			{
-				*end = *old;
-				end--;
-			}
-			for (; first != last; first++)
-			{
-				*position = *first;
-				position++;
+				last--;
+				this->_allocator.construct(_container + offset - 1 + n, *last);
 			}
 		}
 		iterator erase(iterator position)
