@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 15:02:03 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/08 20:06:05 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/12 13:54:51 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ namespace ft
 		*/
 		bool operator==(const map_iterator& rhs) const { return this->_node == rhs._node; }
 		bool operator!=(const map_iterator& rhs) const { return this->_node != rhs._node; }
-	};
+	}; // class map_iterator
 
 	template <class T>
 	class map_const_iterator
@@ -220,7 +220,7 @@ namespace ft
 		*/
 		bool operator==(const map_const_iterator &rhs) const { return this->_node == rhs._node; }			
 		bool operator!=(const map_const_iterator &rhs) const { return this->_node != rhs._node; }
-	};
+	}; // class map_const_iterator
 }
 
 #endif

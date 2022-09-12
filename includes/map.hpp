@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 21:56:08 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/08 20:08:46 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/12 13:53:56 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,9 @@ namespace ft
 		}
 		~map() {}
 
+		/*
+		** Operators
+		*/
 		map &operator=(const map &x)
 		{
 			if (this == &x)
@@ -280,7 +283,8 @@ namespace ft
 		** Allocator
 		*/
 		allocator_type get_allocator() const { return _allocator; }
-	};
-}
+	}; // class map
+
+} // namespace ft
 
 #endif

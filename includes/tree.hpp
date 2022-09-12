@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 17:19:41 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/05 20:02:34 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/12 13:55:31 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ namespace ft
 		: _data(other._data), _parent(other._parent), _left(other._left), _right(other._right)
 		, _height(other._height), _balance(0)
 		{}
-	}; // struct node
+	}; // struct tree_node
 
 	/*   tree	*/
 	template <class T, class Compare, class Alloc>
@@ -345,7 +345,7 @@ namespace ft
 			_update_node_info(z->_left);
 			_update_node_info(z);
 		}
-	};
+	}; // class avl_tree
 }
 
 #endif
