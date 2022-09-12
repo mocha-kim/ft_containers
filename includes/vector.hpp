@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 21:56:13 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/12 14:13:55 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/12 15:33:57 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,18 +126,17 @@ namespace ft
 		bool empty() const { return _length == 0; };
 		void reserve(size_type n)
 		{
-			if (n > _capacity)
-			{
-				size_type i = -1;
-				pointer	tmp;
-				tmp  = _allocator.allocate(n);
-				_capacity = n;
-				while (++i < _length)
+			if (n > this->max_size())
+				throw std::length_error("vector::reserve");
+			if (n <= this->_capacity)	
+				return;
+			pointer tmp = _allocator.allocate(n);
+			_capacity = n;
+			for (size_type i = 0; i < n && i < _length; i++)
 					tmp[i] = _container[i];
+			if (_capacity != 0)
 				_allocator.deallocate(_container, _capacity);
-				_container = NULL;
-				_container = tmp;
-			}
+			_container = tmp;
 		};
 
 		/*
@@ -204,9 +203,11 @@ namespace ft
         }
 		void push_back(const value_type &value)
 		{
-			if (_length + 1 > _capacity)
-				reserve(_length + 1);
-			_allocator.construct(&(_container[_length]), value);
+			if (_capacity == 0)
+				this->reserve(1);
+			else if (_capacity <= _length)
+				this->reserve(_calc_capacity(_length + 1));
+			_allocator.construct(_container + _length, value);
 			_length++;
 		};
 		void pop_back()
@@ -301,6 +302,14 @@ namespace ft
 			ft::swap(_capacity, other._capacity);
 			ft::swap(_length, other._length);
 		};
+
+	private:
+		size_t	_calc_capacity(size_t n)
+		{
+			if (n <= _length * 2)
+				return (_length * 2);
+			return (n);
+		}
 	}; // class vector
 
 	template<class T, class Alloc>
