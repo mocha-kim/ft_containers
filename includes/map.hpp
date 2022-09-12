@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 21:56:08 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/12 14:13:39 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/12 14:18:53 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,11 @@ namespace ft
 		: _tree(), _allocator(alloc), _compare(comp)
 		{
 			for (; first != last; first++)
-				_tree.insert(*first);
+			{
+				node_pointer node = _tree.find(*first);
+				if (!node || node == _tree.get_end())
+					_tree.insert(*first);
+			}
 		}
 		~map() {}
 
