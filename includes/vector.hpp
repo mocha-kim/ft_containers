@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 21:56:13 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/12 20:44:29 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/12 21:25:05 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -284,13 +284,12 @@ namespace ft
 		iterator erase(iterator position)
 		{
 			iterator i = position;
-			while (i + 1 != end())
-			{
-				*i = *(i + 1);
-				i++;
-			}
+			iterator end = this->end();
+			for (; i + 1 != end; i++)
+				i[0] = i[1];
+			_allocator.destroy(_container + _length - 1);
 			_length--;
-			return (iterator(position));
+			return position;
 		};
 		iterator erase(iterator first, iterator last)
 		{
