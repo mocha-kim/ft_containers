@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 21:56:13 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/12 14:09:36 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/12 14:13:55 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,7 +323,7 @@ namespace ft
 	};
 
 	template <class T, class Alloc>
-	bool operator<(const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
+	bool operator<(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{
 		size_t i;
 		size_t n;
@@ -342,18 +342,18 @@ namespace ft
 		return lhs.size() < rhs.size();
 	}
 	template <class T, class Alloc>
-	bool operator>(const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
+	bool operator>(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{
 		return !(lhs < rhs) && !(lhs == rhs);
 	}
 
 	template <class T, class Alloc>
-	bool operator<=(const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
+	bool operator<=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{
 		return !(lhs > rhs);
 	}
 	template <class T, class Alloc>
-	bool operator>=(const vector<T,Alloc> &lhs, const vector<T,Alloc> &rhs)
+	bool operator>=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{
 		return !(lhs < rhs);
 	}
