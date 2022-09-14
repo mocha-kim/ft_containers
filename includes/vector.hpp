@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 21:56:13 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/14 14:14:04 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/14 14:47:31 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -307,6 +307,9 @@ namespace ft
 		};
 		void swap(vector &other)
 		{
+			if (other == *this)
+				return;
+			
 			ft::swap(_container, other._container);
 			ft::swap(_capacity, other._capacity);
 			ft::swap(_length, other._length);
