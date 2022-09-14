@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 21:56:08 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/12 14:18:53 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/14 17:53:59 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ namespace ft
 		explicit map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type())
 		: _tree(), _allocator(alloc), _compare(comp)
 		{}
-		explicit map(const map &x)
+		map(const map &x)
 		: _allocator(x._allocator), _compare(x._compare)
 		{
 			*this = x;
@@ -131,6 +131,22 @@ namespace ft
 		/*
 		** Element access
 		*/
+		mapped_type &at(const key_type &k)
+		{
+			value_type data = ft::make_pair(k, mapped_type());
+			node_pointer node = _tree.find(data);
+			if (!node || node == _tree.get_end())
+				throw std::out_of_range("index out_of_range");
+			return node->_data.second;
+		};
+		const mapped_type &at(const key_type &k) const
+		{
+			value_type data = ft::make_pair(k, mapped_type());
+			node_pointer node = _tree.find(data);
+			if (!node || node == _tree.get_end())
+				throw std::out_of_range("index out_of_range");
+			return node->_data.second;
+		}
 		mapped_type &operator[] (const key_type &k)
 		{
 			value_type data = ft::make_pair(k, mapped_type());
