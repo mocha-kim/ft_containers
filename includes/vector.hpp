@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 21:56:13 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/12 21:25:05 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/14 14:14:04 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,8 @@ namespace ft
 				throw std::length_error("vector::reserve");
 			if (n <= this->_capacity)	
 				return;
-			n = _calc_capacity(n);
+			if (n <= _length * 2)
+				n = _length * 2;
 			pointer tmp = _allocator.allocate(n);
 			_capacity = n;
 			for (size_type i = 0; i < n && i < _length; i++)
@@ -207,7 +208,7 @@ namespace ft
 			if (_capacity == 0)
 				this->reserve(1);
 			else if (_capacity <= _length)
-				this->reserve(_calc_capacity(_length + 1));
+				this->reserve(_length + 1);
 			_allocator.construct(_container + _length, value);
 			_length++;
 		};
@@ -283,31 +284,22 @@ namespace ft
 		}
 		iterator erase(iterator position)
 		{
-			iterator i = position;
-			iterator end = this->end();
-			for (; i + 1 != end; i++)
-				i[0] = i[1];
-			_allocator.destroy(_container + _length - 1);
-			_length--;
-			return position;
+			return this->erase(position, position + 1);
 		};
 		iterator erase(iterator first, iterator last)
 		{
 			iterator ret = first;
 			iterator end = this->end();
 			size_type del_length = ft::distance(first, last);
-			for (; last != end; last++)
+			while (last != end)
 			{
 				*first = *last;
-				first++;
+				++first;
+				++last;
 			}
-			while (del_length > 0)
-			{
-				_length--;
-				_allocator.destroy(&_container[_length]);
-				del_length--;
-			}
-			return (ret);
+			while (del_length-- > 0)
+				_allocator.destroy(&_container[--_length]);
+			return ret;
 		};
 		void clear()
 		{
@@ -319,14 +311,6 @@ namespace ft
 			ft::swap(_capacity, other._capacity);
 			ft::swap(_length, other._length);
 		};
-
-	private:
-		size_t	_calc_capacity(size_t n)
-		{
-			if (n <= _length * 2)
-				return (_length * 2);
-			return (n);
-		}
 	}; // class vector
 
 	template<class T, class Alloc>
