@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 16:26:08 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/12 14:00:53 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/14 14:37:35 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ namespace ft
 	template <typename T>
 	void swap(T &a, T &b)
 	{
-  		T c(a);
-		a = b;
-		b = c;
+        T tmp = b;  
+        b = a;
+        a = tmp;
 	};
 }
 
