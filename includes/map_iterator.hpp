@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 15:02:03 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/12 13:54:51 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/14 19:43:49 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 namespace ft
 {
 	template <typename T>
-	class map_iterator
+	class map_iterator : public iterator_traits<tree_node<T>*>
 	{
 
 	public:

@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 17:14:12 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/14 19:29:57 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/14 19:51:06 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ namespace ft
 	}; // class iterator_traits<const T*>
 
 	template <typename T>
-	class random_access_iterator
+	class random_access_iterator : public iterator_traits<T*>
 	{
 	public:
 		typedef T			value_type;
@@ -147,6 +147,8 @@ namespace ft
 		typedef typename Iter::difference_type	difference_type;
 		typedef typename Iter::pointer			pointer;
 		typedef typename Iter::reference		reference;
+		
+		typedef typename Iter::iterator_category	iterator_category;
 
 	protected:
 		iterator_type	_pointer;

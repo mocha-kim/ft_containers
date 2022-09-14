@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 16:51:07 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/08/06 00:54:48 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/14 19:57:24 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ namespace ft
 		typedef std::ptrdiff_t		difference_type;
 		typedef value_type			*pointer;
 		typedef value_type			&reference;
+		
+    	typedef pointer				iterator_type;
 
 	protected:
 		typedef random_access_iterator<T>	rand_iter;
