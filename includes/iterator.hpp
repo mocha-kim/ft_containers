@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 17:14:12 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/08 17:57:37 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/14 19:29:57 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 #define _FT_ITERATOR_HPP
 
 namespace ft
-{	template <class Iterator>
+{
+	template <class Iterator>
 	class iterator_traits
 	{
 		public:
