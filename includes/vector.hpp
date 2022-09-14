@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 21:56:13 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/14 14:47:31 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/14 19:23:07 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,8 @@ namespace ft
 		/*
 		** Iterators
 		*/	
-		iterator begin() { return iterator(&(_container[0])); };
-		const_iterator begin() const { return const_iterator(&(_container[0])); };
+		iterator begin() { return _container; };
+		const_iterator begin() const { return _container; };
 		iterator end() { return iterator(&(_container[_length])); };
 		const_iterator end() const { return const_iterator(&(_container[_length])); };
 		reverse_iterator rbegin() { return reverse_iterator(end()); };
@@ -263,6 +263,8 @@ namespace ft
 		{
 			if (first == last)
 				return;
+			if (typeid(value_type) != typeid(*first))
+				throw "n";
 			
 			difference_type offset = position - this->begin();
 			size_type n = ft::distance(first, last);
