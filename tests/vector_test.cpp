@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 16:26:28 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/16 19:20:35 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/16 19:40:15 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ int vector_test()
 	v_access();
 	v_assign();
 	v_push_pop();
-	// v_insert();
-	// v_erase();
-	// v_clear();
-	// v_swap();
+	v_insert();
+	v_erase();
+	v_clear();
+	v_swap();
 	return 0;
 }
