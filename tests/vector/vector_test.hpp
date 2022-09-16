@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 16:27:37 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/16 18:40:53 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/16 18:53:48 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 /* v_t_1 */
 
 void v_constructor();
-void v_assign_operator();
+void v_operators();
 
 /* v_t_2 */
 
@@ -53,6 +53,5 @@ void v_clear();
 /* v_t_6 */
 
 void v_swap();
-void v_operators();
 
 #endif

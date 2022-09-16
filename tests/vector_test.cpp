@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 16:26:28 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/16 18:36:26 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/16 18:54:03 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,11 @@
 int vector_test()
 {
 	v_constructor();
-	v_assign_operator();
+	v_operators();
 	v_iterator();
 	v_size();
 	v_capacity();
 
-	// v_access_operator();
 	// v_at();
 	// v_front();
 	// v_back();
@@ -32,7 +31,5 @@ int vector_test()
 	// v_erase();
 	// v_clear();
 	// v_swap();
-
-	// v_operators();
 	return 0;
 }

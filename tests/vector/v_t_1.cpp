@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 16:28:52 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/16 17:24:48 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/16 19:04:26 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,9 @@ void v_constructor()
 	}
 }
 
-void v_assign_operator()
+void v_operators()
 {
-	std::cout << "------------- Assign Operator ------------\n";
+	std::cout << "---------------- Operators ---------------\n";
 
 	std::vector<int> tmp(5);
 	for (int i = 0; i < 5; i++)
@@ -75,9 +75,118 @@ void v_assign_operator()
 	std::vector<int> v1(tmp.begin(), tmp.end());
 	ft::vector<int> v2(tmp.begin(), tmp.end());
 
-	std::vector<int> v3 = v1;
-	ft::vector<int> v4 = v2;
-
 	std::cout << "> operator=: ";
-	ite_print_compare(v3, v4);
+	{
+		std::vector<int> v3 = v1;
+		ft::vector<int> v4 = v2;
+		ite_print_compare(v3, v4);
+	}
+
+	std::cout << "> operator[]: ";
+	{
+		print_compare(v1[0], v2[0], false);
+		std::cout << " ";
+		
+		print_compare(v1[3], v2[3], false);
+		std::cout << "\n";
+	}
+
+	std::vector<int> v3(7);
+	ft::vector<int> v4(7);
+	std::vector<int> v5(v1);
+	v5.push_back(100);
+	ft::vector<int> v6(v2);
+	v6.push_back(100);
+	std::vector<int> v7(3, 42);
+	ft::vector<int> v8(3, 42);
+
+	std::cout << "> operator==: ";
+	{
+		print_compare(v1 == v3, v2 == v4, false);
+		std::cout << " ";
+
+		print_compare(v7 == v3, v8 == v4, false);
+		std::cout << " ";
+
+		print_compare(v1 == v5, v2 == v6, false);
+		std::cout << " ";
+		
+		print_compare(v1 == v7, v2 == v8, false);
+		std::cout << "\n";
+	}
+
+	std::cout << "> operator!=: ";
+	{
+		print_compare(v1 != v3, v2 != v4, false);
+		std::cout << " ";
+
+		print_compare(v7 != v3, v8 != v4, false);
+		std::cout << " ";
+
+		print_compare(v1 != v5, v2 != v6, false);
+		std::cout << " ";
+		
+		print_compare(v1 != v7, v2 != v8, false);
+		std::cout << "\n";
+	}
+
+	std::cout << "> operator<: ";
+	{
+		print_compare(v1 < v3, v2 < v4, false);
+		std::cout << " ";
+
+		print_compare(v7 < v3, v8 < v4, false);
+		std::cout << " ";
+
+		print_compare(v1 < v5, v2 < v6, false);
+		std::cout << " ";
+		
+		print_compare(v1 < v7, v2 < v8, false);
+		std::cout << "\n";
+	}
+
+	std::cout << "> operator<=: ";
+	{
+		print_compare(v1 <= v3, v2 <= v4, false);
+		std::cout << " ";
+
+		print_compare(v7 <= v3, v8 <= v4, false);
+		std::cout << " ";
+
+		print_compare(v1 <= v5, v2 <= v6, false);
+		std::cout << " ";
+		
+		print_compare(v1 <= v7, v2 <= v8, false);
+		std::cout << "\n";
+	}
+
+	std::cout << "> operator>: ";
+	{
+		print_compare(v1 > v3, v2 > v4, false);
+		std::cout << " ";
+
+		print_compare(v7 > v3, v8 > v4, false);
+		std::cout << " ";
+
+		print_compare(v1 > v5, v2 > v6, false);
+		std::cout << " ";
+		
+		print_compare(v1 > v7, v2 > v8, false);
+		std::cout << "\n";
+	}
+
+	std::cout << "> operator>=: ";
+	{
+		print_compare(v1 >= v3, v2 >= v4, false);
+		std::cout << " ";
+
+		print_compare(v7 >= v3, v8 >= v4, false);
+		std::cout << " ";
+
+		print_compare(v1 >= v5, v2 >= v6, false);
+		std::cout << " ";
+		
+		print_compare(v1 >= v7, v2 >= v8, false);
+		std::cout << "\n";
+	}
 }
