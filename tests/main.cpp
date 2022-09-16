@@ -11,10 +11,25 @@ int main(int argc, char** argv) {
 	const int seed = atoi(argv[1]);
 	srand(seed);
 
-	std::cout << GRN "========== ft_test NAMESPADE FT ==========\n" NC;
+	std::cout << "==========================================\n";
+	std::cout << "               FT MAIN TEST               \n";
+	std::cout << "==========================================\n";
+	std::cout << GRN "---------- ft_test NAMESPADE FT ----------\n" NC;
 	ft_test_ft();
-	std::cout << YLW "\n========== ft_test NAMESPADE STD ==========\n" NC;
+	std::cout << YLW "\n--------- ft_test NAMESPADE STD ----------\n" NC;
 	ft_test_std();
+
+	std::cout << "==========================================\n";
+	std::cout << "                VECTOR TEST               \n";
+	std::cout << "==========================================\n";
+	vector_test();
+
+	// std::cout << "==========================================\n";
+	// std::cout << "=               VECTOR TEST              =\n";
+	// std::cout << "==========================================\n";
+	// std::cout << "==========================================\n";
+	// std::cout << "=               VECTOR TEST              =\n";
+	// std::cout << "==========================================\n";
 
 	return 0;
 }
