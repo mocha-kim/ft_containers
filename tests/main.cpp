@@ -1,26 +1,5 @@
 #include "test.hpp"
 
-template<class T>
-static bool print_value_compare(const T& ft, const T& std)
-{
-	bool ret = t1 == t2;
-	std::cout << "> ";
-	if (ret)
-		std::cout << GRN "OK\n" NC;
-	else
-		std::cout << RED "KO\n" NC;
-	return ret;
-}
-
-template<class T>
-static bool print_value(const T& ft, const T& std)
-{
-	std::cout << "> \n"
-    std::cout << " FT: " << ft << "\n";
-    std::cout << "STD: " << std << "\n";
-    return t1 == t2 ? true : false;
-}
-
 int main(int argc, char** argv) {
 	if (argc != 2)
 	{
