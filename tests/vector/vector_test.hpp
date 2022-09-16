@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 16:27:37 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/16 18:53:48 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/16 19:20:12 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,27 +31,15 @@ void v_capacity();
 
 /* v_t_3 */
 
-void v_access_operator();
-void v_at();
-void v_front();
-void v_back();
+void v_access();
+void v_assign();
+void v_push_pop();
 
 /* v_t_4 */
-
-void v_reserve();
-void v_resize();
-void v_assign();
-void v_push_back();
-void v_pop_back();
-
-/* v_t_5 */
 
 void v_insert();
 void v_erase();
 void v_clear();
-
-/* v_t_6 */
-
 void v_swap();
 
 #endif
