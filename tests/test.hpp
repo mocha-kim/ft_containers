@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 14:08:50 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/16 18:49:29 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/19 14:33:40 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,14 @@ bool st_compare(const T1& ft, const T2& std)
 {
 	if (ft.size() != std.size())
 		return false;
-	while(!ft.empty())
+	T1 tmp_ft = ft;
+	T2 tmp_std = std;
+	while(!tmp_ft.empty())
 	{
-		if (ft.top() != std.top())
+		if (tmp_ft.top() != tmp_std.top())
 			return false;
-		ft.pop();
-		std.pop();
+		tmp_ft.pop();
+		tmp_std.pop();
 	}
 	return true;
 }
@@ -112,6 +114,6 @@ int ft_test_ft();
 int ft_test_std();
 
 int vector_test();
-
+int stack_test();
 
 #endif
