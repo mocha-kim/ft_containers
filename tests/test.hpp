@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 14:08:50 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/19 14:59:13 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/19 19:30:40 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ struct Buffer
 #define COUNT (MAX_RAM / (int)sizeof(Buffer))
 
 template<class T>
-bool value_compare(const T& ft, const T& std) { return ft == std; }
+bool value_compare(const T& std, const T& ft) { return ft == std; }
 
 template<class T>
-bool print_compare(const T& ft, const T& std, bool newline = true)
+bool print_compare(const T& std, const T& ft, bool newline = true)
 {
-	bool ret = value_compare(ft, std);
+	bool ret = value_compare(std, ft);
 	std::string nl = newline ? "\n" : "";
 	if (ret)
 		std::cout << GRN "OK" NC << nl;
@@ -51,28 +51,32 @@ bool print_compare(const T& ft, const T& std, bool newline = true)
 }
 
 template<class T>
-void print_value(const T& ft, const T& std)
+void print_value(const T& std, const T& ft)
 {
     std::cout << ">  FT: " << ft << "\n";
     std::cout << "> STD: " << std << "\n";
 }
 
 template<class T1, class T2>
-bool ite_compare(const T1& ft, const T2& std)
+bool ite_compare(const T1& std, const T2& ft)
 {
 	if (ft.size() != std.size())
 		return false;
-	int size = ft.size();
-	for (int i = 0; i < size; i++)
-		if (ft[i] != std[i])
+	typename T1::const_iterator ite_std = std.begin();
+	typename T2::const_iterator ite_ft = ft.begin(), ited_ft = ft.end();
+	for (; ite_ft != ited_ft; ite_ft++)
+	{
+		if (*ite_ft != *ite_std)
 			return false;
+		ite_std++;
+	}
 	return true;
 }
 
 template<class T1, class T2>
-bool ite_print_compare(const T1& ft, const T2& std, bool newline = true)
+bool ite_print_compare(const T1& std, const T2& ft, bool newline = true)
 {
-	bool ret = ite_compare(ft, std);
+	bool ret = ite_compare(std, ft);
 	std::string nl = newline ? "\n" : "";
 	if (ret)
 		std::cout << GRN "OK" NC << nl;
@@ -82,12 +86,41 @@ bool ite_print_compare(const T1& ft, const T2& std, bool newline = true)
 }
 
 template<class T1, class T2>
-bool st_compare(const T1& ft, const T2& std)
+bool map_compare(const T1& std, const T2& ft)
 {
 	if (ft.size() != std.size())
 		return false;
-	T1 tmp_ft = ft;
-	T2 tmp_std = std;
+	typename T1::const_iterator ite_std = std.begin();
+	typename T2::const_iterator ite_ft = ft.begin(), ited_ft = ft.end();
+	for (; ite_ft != ited_ft; ite_ft++)
+	{
+		if ((*ite_ft).first != (*ite_std).first
+			|| (*ite_ft).second != (*ite_std).second)
+			return false;
+		ite_std++;
+	}
+	return true;
+}
+
+template<class T1, class T2>
+bool map_print_compare(const T1& std, const T2& ft, bool newline = true)
+{
+	bool ret = map_compare(std, ft);
+	std::string nl = newline ? "\n" : "";
+	if (ret)
+		std::cout << GRN "OK" NC << nl;
+	else
+		std::cout << RED "KO" NC << nl;
+	return ret;
+}
+
+template<class T1, class T2>
+bool st_compare(const T1& std, const T2& ft)
+{
+	if (ft.size() != std.size())
+		return false;
+	T1 tmp_std = std;
+	T2 tmp_ft = ft;
 	while(!tmp_ft.empty())
 	{
 		if (tmp_ft.top() != tmp_std.top())
@@ -99,9 +132,9 @@ bool st_compare(const T1& ft, const T2& std)
 }
 
 template<class T1, class T2>
-bool st_print_compare(const T1& ft, const T2& std, bool newline = true)
+bool st_print_compare(const T1& std, const T2& ft, bool newline = true)
 {
-	bool ret = st_compare(ft, std);
+	bool ret = st_compare(std, ft);
 	std::string nl = newline ? "\n" : "";
 	if (ret)
 		std::cout << GRN "OK" NC << nl;
