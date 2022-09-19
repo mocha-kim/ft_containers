@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 21:55:57 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/19 14:19:31 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/19 14:21:59 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,11 @@ namespace ft
 
 		friend bool operator==(const stack<T, Container> &lhs, const stack<T, Container> &rhs)
 		{
-			return (lhs._container == rhs._container);
+			return lhs._container == rhs._container;
 		}
-		friend bool operator< (const stack<T, Container> &lhs, const stack<T, Container> &rhs)
+		friend bool operator<(const stack<T, Container> &lhs, const stack<T, Container> &rhs)
 		{
-			return (lhs._container < rhs._container);
+			return lhs._container < rhs._container;
 		}
 	}; // class stack
 	
