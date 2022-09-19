@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 15:41:05 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/19 19:28:09 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/19 19:35:15 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void m_constructor()
 {
-std::cout << "--------------- Constructor --------------\n";
+	std::cout << "--------------- Constructor --------------\n";
 
 	// default constructor
 	{
@@ -44,7 +44,8 @@ std::cout << "--------------- Constructor --------------\n";
 }
 
 void m_operators()
-{std::cout << "---------------- Operators ---------------\n";
+{
+	std::cout << "---------------- Operators ---------------\n";
 
 	std::map<int, int> m1;
 	ft::map<int, int> m2;

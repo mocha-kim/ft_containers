@@ -1,30 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map_test.cpp                                       :+:      :+:    :+:   */
+/*   m_t_2.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/19 14:58:05 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/19 19:33:16 by sunhkim          ###   ########.fr       */
+/*   Created: 2022/09/19 19:33:28 by sunhkim           #+#    #+#             */
+/*   Updated: 2022/09/19 19:33:38 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./map/map_test.hpp"
+#include "map_test.hpp"
 
-int map_test()
-{
-	m_constructor();
-	m_operators();
-	// m_iterator();
-	// m_size();
-	// m_capacity();
-	// m_insert();
-	// m_erase();
-	// m_clear();
-	// m_swap();
-	// m_obeservers();
-	// m_access();
-	// m_find();
-	return 0;
-}
+void m_iterator();
+void m_size();
+void m_capacity();
