@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 14:08:50 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/19 14:33:40 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/19 14:59:13 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,5 +115,6 @@ int ft_test_std();
 
 int vector_test();
 int stack_test();
+int map_test();
 
 #endif
