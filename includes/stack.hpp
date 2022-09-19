@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 21:55:57 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/08/08 17:16:33 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/19 14:19:31 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,7 @@ namespace ft
 	public:
 		explicit stack(const container_type &cont = container_type())
 		: _container(cont) {};
-		stack(const stack &other)
-		{
-			*this = other;
-		};
+		stack(const stack &other) { *this = other; };
 		~stack(void) {};
 
 		stack &operator=(const stack &other)
@@ -52,11 +49,11 @@ namespace ft
 			return (_container.size());
 		};
 
-		value_type &top(void)
+		value_type &top()
 		{
 			return (_container.back());
 		};
-		const value_type &top(void) const
+		const value_type &top() const
 		{
 			return (_container.back());
 		};
@@ -65,20 +62,20 @@ namespace ft
 		{
 			_container.push_back(value);
 		};
-		void pop(void)
+		void pop()
 		{
 			_container.pop_back();
 		};
 
-		friend
-		bool operator==(const stack<T, Container> &lhs, const stack<T, Container> &rhs) {
+		friend bool operator==(const stack<T, Container> &lhs, const stack<T, Container> &rhs)
+		{
 			return (lhs._container == rhs._container);
 		}
-		friend
-		bool operator< (const stack<T, Container> &lhs, const stack<T, Container> &rhs) {
+		friend bool operator< (const stack<T, Container> &lhs, const stack<T, Container> &rhs)
+		{
 			return (lhs._container < rhs._container);
 		}
-	};
+	}; // class stack
 	
 	template <class T, class Container>
 	bool operator!=(const stack<T, Container> &lhs, const stack<T, Container> &rhs)
@@ -100,6 +97,6 @@ namespace ft
 	{
 		return !(lhs < rhs);
 	};
-}
+} // namespace ft
 
 #endif
