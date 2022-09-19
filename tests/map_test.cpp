@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:58:05 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/19 19:33:16 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/19 19:45:38 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ int map_test()
 {
 	m_constructor();
 	m_operators();
-	// m_iterator();
-	// m_size();
-	// m_capacity();
+	m_iterator();
+	m_size();
+	m_capacity();
 	// m_insert();
 	// m_erase();
 	// m_clear();

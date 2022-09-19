@@ -6,7 +6,7 @@
 #    By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/16 14:04:31 by sunhkim           #+#    #+#              #
-#    Updated: 2022/09/19 18:58:36 by sunhkim          ###   ########.fr        #
+#    Updated: 2022/09/19 19:45:47 by sunhkim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,8 @@ SRCS			= ./tests/main.cpp \
 					./tests/stack/s_t_1.cpp \
 					./tests/stack/s_t_2.cpp \
 					./tests/map_test.cpp \
-					./tests/map/m_t_1.cpp 
+					./tests/map/m_t_1.cpp \
+					./tests/map/m_t_2.cpp 
 OBJS			= $(SRCS:.cpp=.o)
 
 INCS			= ./tests/test.hpp

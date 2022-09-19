@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 14:08:50 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/19 19:30:40 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/19 19:52:36 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,24 @@ template<class T>
 bool print_compare(const T& std, const T& ft, bool newline = true)
 {
 	bool ret = value_compare(std, ft);
+	std::string nl = newline ? "\n" : "";
+	if (ret)
+		std::cout << GRN "OK" NC << nl;
+	else
+		std::cout << RED "KO" NC << nl;
+	return ret;
+}
+
+template<class T1, class T2>
+bool pair_value_compare(const T1& std, const T2& ft)
+{ 
+	return (std.first == ft.first) && (std.second == ft.second); 
+}
+
+template<class T1, class T2>
+bool pair_print_compare(const T1& std, const T2& ft, bool newline = true)
+{
+	bool ret = pair_value_compare(std, ft);
 	std::string nl = newline ? "\n" : "";
 	if (ret)
 		std::cout << GRN "OK" NC << nl;

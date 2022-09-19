@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 15:02:03 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/14 19:43:49 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/19 19:50:12 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,25 @@ namespace ft
 			_node = other._node; 
 			return *this;
 		}
-		
+		map_iterator &operator+=(int i)
+		{
+			while (i)
+			{
+				this->operator++();
+				i--;
+			}
+			return *this;
+		}
+		map_iterator &operator-=(int i)
+		{
+			while (i)
+			{
+				this->operator--();
+				i--;
+			}
+			return *this;
+		}
+
 		/*
 		** Member and pointer operators
 		*/
@@ -78,13 +96,13 @@ namespace ft
 			while (next->_left)
 				next = next->_left;
 			_node = next;
-			return (*this);
+			return *this;
 		}
 		map_iterator operator++(int)
 		{
 			map_iterator tmp(*this);
 			this->operator++();
-			return (tmp);
+			return tmp;
 		}
 		map_iterator& operator--()
 		{
@@ -103,7 +121,7 @@ namespace ft
 				tmp = tmp->_parent;
 			tmp = tmp->_parent;
 			_node = tmp;
-			return (*this);
+			return *this;
 		}
 		map_iterator operator--(int)
 		{
