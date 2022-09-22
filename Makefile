@@ -6,7 +6,7 @@
 #    By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/16 14:04:31 by sunhkim           #+#    #+#              #
-#    Updated: 2022/09/22 15:27:32 by sunhkim          ###   ########.fr        #
+#    Updated: 2022/09/22 18:36:27 by sunhkim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ OBJS			= $(SRCS:.cpp=.o)
 
 INCS			= ./tests/test.hpp
 
-CXX				= clang++
+CXX				= c++
 CXXFLAGS		= -Wall -Wextra -Werror --std=c++98
 
 all:			$(NAME)
