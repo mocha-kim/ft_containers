@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 21:55:57 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/19 14:21:59 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/22 18:35:26 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,26 +36,29 @@ namespace ft
 
 		stack &operator=(const stack &other)
 		{
+			if (this == &other)
+				return *this;
+				
 			this->_container = other._container;
-			return (*this);
+			return *this;
 		};
 
 		bool empty(void) const
 		{
-			return (_container.empty());
+			return _container.empty();
 		};
 		size_type size(void) const
 		{
-			return (_container.size());
+			return _container.size();
 		};
 
 		value_type &top()
 		{
-			return (_container.back());
+			return _container.back();
 		};
 		const value_type &top() const
 		{
-			return (_container.back());
+			return _container.back();
 		};
 
 		void push(const value_type &value)
