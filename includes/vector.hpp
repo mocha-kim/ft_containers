@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 21:56:13 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/19 19:29:37 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/22 18:34:01 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,9 @@ namespace ft
 		*/
 		vector &operator=(const vector &other)
 		{
+			if (this == &other)
+				return *this;
+				
 			if (_container != 0)
 				_allocator.deallocate(_container, _capacity);
 			_allocator = other._allocator;
