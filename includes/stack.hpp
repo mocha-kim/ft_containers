@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 21:55:57 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/22 18:35:26 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/22 18:39:58 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ namespace ft
 		explicit stack(const container_type &cont = container_type())
 		: _container(cont) {};
 		stack(const stack &other) { *this = other; };
-		~stack(void) {};
+		~stack() {};
 
 		stack &operator=(const stack &other)
 		{
@@ -43,11 +43,11 @@ namespace ft
 			return *this;
 		};
 
-		bool empty(void) const
+		bool empty() const
 		{
 			return _container.empty();
 		};
-		size_type size(void) const
+		size_type size() const
 		{
 			return _container.size();
 		};

@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 21:56:08 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/22 18:35:57 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/22 18:39:32 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,10 @@ namespace ft
 		explicit map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type())
 		: _tree(), _allocator(alloc), _compare(comp)
 		{}
-		map(const map &x)
-		: _allocator(x._allocator), _compare(x._compare)
+		map(const map &other)
+		: _allocator(other._allocator), _compare(other._compare)
 		{
-			*this = x;
+			*this = other;
 		}
 		template <class InputIterator>
 		map (InputIterator first, InputIterator last, const key_compare &comp = key_compare()
