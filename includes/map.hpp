@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 21:56:08 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/14 17:53:59 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/22 18:35:57 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,16 +96,16 @@ namespace ft
 		/*
 		** Operators
 		*/
-		map &operator=(const map &x)
+		map &operator=(const map &other)
 		{
-			if (this == &x)
+			if (this == &other)
 				return *this;
 
 			_tree.clear();
-			if (x.size())
-				insert(x.begin(), x.end());
-			_allocator = x._allocator;
-			_compare = x._compare;
+			if (other.size())
+				insert(other.begin(), other.end());
+			_allocator = other._allocator;
+			_compare = other._compare;
 			return *this;
 		}
 
