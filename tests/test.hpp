@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 14:08:50 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/19 19:52:36 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/20 18:29:43 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ bool print_compare(const T& std, const T& ft, bool newline = true)
 }
 
 template<class T1, class T2>
-bool pair_value_compare(const T1& std, const T2& ft)
+bool pair_compare(const T1& std, const T2& ft)
 { 
 	return (std.first == ft.first) && (std.second == ft.second); 
 }
@@ -59,7 +59,7 @@ bool pair_value_compare(const T1& std, const T2& ft)
 template<class T1, class T2>
 bool pair_print_compare(const T1& std, const T2& ft, bool newline = true)
 {
-	bool ret = pair_value_compare(std, ft);
+	bool ret = pair_compare(std, ft);
 	std::string nl = newline ? "\n" : "";
 	if (ret)
 		std::cout << GRN "OK" NC << nl;
@@ -112,8 +112,7 @@ bool map_compare(const T1& std, const T2& ft)
 	typename T2::const_iterator ite_ft = ft.begin(), ited_ft = ft.end();
 	for (; ite_ft != ited_ft; ite_ft++)
 	{
-		if ((*ite_ft).first != (*ite_std).first
-			|| (*ite_ft).second != (*ite_std).second)
+		if (!pair_compare(*ite_ft, *ite_std))
 			return false;
 		ite_std++;
 	}
