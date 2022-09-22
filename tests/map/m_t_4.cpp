@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 15:00:35 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/22 15:29:12 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/22 16:13:53 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,12 +98,27 @@ void m_obeservers()
 	}
 }
 
-void m_access()
-{
-
-}
-
 void m_find()
 {
-	
+	std::cout << "------------------ Find ------------------\n";
+
+	std::cout << "> find: ";
+	std::map<int, float> std_m;
+	ft::map<int, float> ft_m;
+	{
+		std::vector<std::pair<int, float> > std_vt;
+		std::vector<ft::pair<int, float> > ft_vt;
+		for(int i = 1; i < 7; i++)
+		{
+			std_vt.push_back(std::make_pair(i * 7, i * 0.11f));
+			ft_vt.push_back(ft::make_pair(i * 7, i * 0.11f));
+		}
+
+		std_m.insert(std_vt.begin(), std_vt.end());
+		ft_m.insert(ft_vt.begin(), ft_vt.end());
+	}
+
+	print_compare(std_m.find(42)->second, ft_m.find(42)->second, false);
+	std::cout << " ";
+	print_compare(std_m.find(7)->second, ft_m.find(7)->second);
 }

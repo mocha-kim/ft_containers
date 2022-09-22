@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 14:58:05 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/22 15:27:37 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/22 15:44:08 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int map_test()
 	m_clear();
 	m_swap();
 	m_obeservers();
-	// m_access();
-	// m_find();
+	m_find();
 	return 0;
 }

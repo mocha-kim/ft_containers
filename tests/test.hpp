@@ -6,7 +6,7 @@
 /*   By: sunhkim <sunhkim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 14:08:50 by sunhkim           #+#    #+#             */
-/*   Updated: 2022/09/20 18:29:43 by sunhkim          ###   ########.fr       */
+/*   Updated: 2022/09/22 16:04:49 by sunhkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ bool pair_print_compare(const T1& std, const T2& ft, bool newline = true)
 template<class T>
 void print_value(const T& std, const T& ft)
 {
-    std::cout << ">  FT: " << ft << "\n";
     std::cout << "> STD: " << std << "\n";
+    std::cout << ">  FT: " << ft << "\n";
 }
 
 template<class T1, class T2>
